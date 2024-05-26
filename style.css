@@ -1,0 +1,163 @@
+:root {
+    --blue: #404eed;
+    --darker: #1a1b1e;
+    --x-gap: 230px;
+    --y-gap: 93px;
+    --shadow: rgba(0, 0, 0, .5);
+    --dur-word-change: 0.5s;
+    --width-wordPara: 36px; 
+}
+
+body {
+    font-family: monospace;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game {
+    width: 300px;
+    height: 100px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+div[data-order=first] {
+    position: absolute;
+    min-width: 250px;
+    height: 80px;
+    background-color: var(--blue);
+    z-index: 10;
+    box-shadow: var(--shadow) 8px 13px 20px 5px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    animation: toFirst 0.4s ease 0s 1 normal none;
+}
+
+div[data-order=second] {
+    min-width: 150px;
+    height: 45px;
+    background-color: var(--darker);
+    position: relative;
+    bottom: calc(-1*var(--y-gap));
+    right: calc(-1*var(--x-gap));
+    padding: 10px;
+    animation: toSecond var(--dur-word-change) ease 0s 1 normal none;
+}
+
+@keyframes toFirst {
+    0% {
+        min-width: unset;
+        width: max-content;
+        height: 45px;
+        box-shadow: none;
+        background-color: var(--darker);
+        transform: translate(var(--x-gap), var(--y-gap));
+    }
+
+    100% {
+        height: 80px;
+    }
+}
+
+@keyframes toSecond {
+    0% {
+        min-width: unset;
+        flex-wrap: nowrap;
+        width: max-content;
+        padding: 10px;
+        height: 80px;
+        background-color: var(--blue);
+        box-shadow: var(--shadow) 8px 13px 20px 5px;
+        transform: translate(calc(-1*var(--x-gap)), calc(-1*var(--y-gap)));
+    }
+
+}
+
+.words {
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.wordPara {
+    position: relative;
+    margin: 0px;
+    width: var(--width-wordPara);
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    color: #999;
+}
+
+div>p[data-status=write] {
+    color: #fff;
+}
+
+#caret {
+    width: var(--width-wordPara);
+    height: 4px;
+    background-color: #fff;
+    position: absolute;
+    bottom: 10px;
+    left: 0px;
+    text-decoration: underline;
+    text-decoration-thickness: 4px;
+    /* text-decoration-color: rgba(255, 255, 255, 1); */
+    animation: underline 1.5s linear 0s infinite normal none;
+}
+
+@keyframes underline {
+    50% {
+        opacity: 0;
+    }
+
+}
+
+div[data-order=first] .wordPara {
+    font-size: 64px;
+    animation: toFirst-text 0.4s ease 0s 1 normal none;
+}
+
+div[data-order=second] .wordPara {
+    font-size: 32px;
+    width: unset;
+    animation: toSecond-text 0.4s ease 0s 1 normal none;
+}
+
+
+@keyframes toFirst-text {
+    0% {
+        font-size: 32px;
+    }
+
+    100% {
+        font-size: 64px;
+    }
+}
+
+@keyframes toSecond-text {
+    0% {
+        font-size: 64px;
+    }
+
+    50%{
+        opacity: 0;
+    }
+
+    80%{
+        opacity: 1;
+    }
+
+    100% {
+        font-size: 32px;
+    }
+}
