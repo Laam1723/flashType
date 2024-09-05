@@ -55,12 +55,19 @@ const langSelect = document.getElementById("lang")
 //db
 const syncDbBtn = document.getElementById("syncDbBtn")
 
+const knownLanguages = ["en", "fr", "es"]
+
 if (lang === null) {
     let userLang = navigator.language
     userLang = userLang.split("-")
     lang = userLang[0]
     localStorage.setItem("lang", lang)
 }
+else if (lang.includes(knownLanguages) === false) {
+    lang = "en"
+    localStorage.setItem("lang", lang)
+}
+
 
 langSelect.value = lang
 
@@ -79,9 +86,9 @@ async function getData(onlyWords) {
     words = await response.json()
     //console.log(words);
     localStorage.setItem("words", JSON.stringify(words))
-if(onlyWords === true){
-    return
-}
+    if (onlyWords === true) {
+        return
+    }
 
     //get SVGs
     const SVGs = [
@@ -561,8 +568,9 @@ settings.addEventListener("click", (e) => {
     else {
         settings.setAttribute("data-space", "collapsed")
     }
-    settings.setAttribute("data-firstAnimation", "false")
-
+    if (playing === false) {
+        settings.setAttribute("data-firstAnimation", "false")
+    }
 
 })
 
