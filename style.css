@@ -1,22 +1,75 @@
 :root {
-    --blue: #404eed;
-    --darker: #1a1b1e;
+    /* common color to both theme */
+    --blue: #5865F2;
+    --selected: #5865F2;
+    --error: #ed4247;
+    --shadow: rgba(0, 0, 0, .5);
+
+    /* colors to light theme */
+    --bgc-light: #ceccc7;
+    --light1: #e5e4e1;
+    --light2: #dbd7d4;
+    --light3: #d3ceca;
+    --light4: #bdb9b3;
+    --unselected: #fff;
+    --light-unWirtten: #666666;
+    --light-transparent: rgba(220, 216, 213, 90%);
+
+    /* colors to dark theme */
+    --bgc-dark: #313338;
+    --dark1: #1a1b1e;
+    --dark2: #22272a;
+    --dark3: #2c3135;
+    --dark4: #42464c;
+    --dark-unWirtten: #aaa;
+    --dark-transparent: rgba(35, 39, 42, 90%);
+    --shadow-light: rgba(255, 255, 255, .5);
+
     --x-gap: 230px;
     --y-gap: 93px;
-    --shadow: rgba(0, 0, 0, .5);
     --dur-word-change: 0.5s;
-    --width-wordPara: 36px; 
+    --width-wordPara: 36px;
+    --border-radius: 20px;
+
+    --width-when-deployed: 0px;
+    --height-when-deployed: 0px;
 }
 
 body {
-    font-family: monospace;
+    font-family: "Ubuntu Mono";
     justify-content: center;
     align-items: center;
     display: flex;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    transition: .3s;
 }
+
+
+
+body[data-theme=dark] {
+    background-color: var(--bgc-dark);
+}
+
+body[data-loaded=true] {
+    animation: body-opacity 1s ease 0s 1 normal none;
+}
+
+@keyframes body-opacity {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 
 #game {
     width: 300px;
@@ -38,19 +91,29 @@ div[data-order=first] {
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+body[data-animation=true] div[data-order=first] {
     animation: toFirst 0.4s ease 0s 1 normal none;
 }
 
 div[data-order=second] {
     min-width: 150px;
     height: 45px;
-    background-color: var(--darker);
-    position: relative;
+    background-color: var(--light1);
+    position: absolute;
     bottom: calc(-1*var(--y-gap));
     right: calc(-1*var(--x-gap));
     padding: 10px;
-    animation: toSecond var(--dur-word-change) ease 0s 1 normal none;
 }
+
+body[data-theme=dark] div[data-order=second] {
+    background-color: var(--dark1);
+}
+
+/* body[data-animation=true] div[data-order=second] {
+    animation: toSecond var(--dur-word-change) ease 0s 1 normal none;
+} */
 
 @keyframes toFirst {
     0% {
@@ -58,7 +121,7 @@ div[data-order=second] {
         width: max-content;
         height: 45px;
         box-shadow: none;
-        background-color: var(--darker);
+
         transform: translate(var(--x-gap), var(--y-gap));
     }
 
@@ -95,12 +158,30 @@ div[data-order=second] {
     display: flex;
     align-content: center;
     flex-wrap: wrap;
-    color: #999;
+    color: var(--dark-unWirtten);
 }
 
-div>p[data-status=write] {
+.words[data-order=second]>.wordPara {
+    position: relative;
+    margin: 0px;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    color: var(--light-unWirtten);
+}
+
+body[data-theme=dark] .words[data-order=second]>.wordPara {
+    color: var(--dark-unWirtten);
+}
+
+.words>p[data-status=write] {
     color: #fff;
 }
+
+.words>p[data-status=wrong] {
+    color: var(--error);
+}
+
 
 #caret {
     width: var(--width-wordPara);
@@ -124,12 +205,18 @@ div>p[data-status=write] {
 
 div[data-order=first] .wordPara {
     font-size: 64px;
+}
+
+body[data-animation=true] div[data-order=first] .wordPara {
     animation: toFirst-text 0.4s ease 0s 1 normal none;
 }
 
 div[data-order=second] .wordPara {
     font-size: 32px;
     width: unset;
+}
+
+body[data-animation=true] div[data-order=second] .wordPara {
     animation: toSecond-text 0.4s ease 0s 1 normal none;
 }
 
@@ -149,15 +236,665 @@ div[data-order=second] .wordPara {
         font-size: 64px;
     }
 
-    50%{
+    50% {
         opacity: 0;
     }
 
-    80%{
+    80% {
         opacity: 1;
     }
 
     100% {
         font-size: 32px;
     }
+}
+
+#endScreen {
+    display: none;
+    position: relative;
+}
+
+body[data-status=end] #endScreen {
+    display: flex;
+    width: 960px;
+    height: 500px;
+    background-color: var(--light-transparent);
+    z-index: 20;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+body[data-theme=dark][data-status=end] #endScreen {
+    background-color: var(--dark-transparent);
+}
+
+.textsEnd {
+    color: var(--dark2);
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    margin: 5px;
+    bottom: 10px;
+}
+
+body[data-theme=dark] .textsEnd {
+    color: var(--light2);
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    margin: 5px;
+    bottom: 10px;
+}
+
+/* 
+.textsEnd>* {
+    color:var(--dark2)
+} */
+
+/* #errors{
+    bottom: 10px;
+    left: 10px;
+} */
+
+#score {
+    font-size: 32px;
+    top: 20px;
+}
+
+.line {
+    border-bottom: 1px #4F4f55 solid;
+    width: 50vw;
+    height: 1px;
+    top: 50px;
+    position: absolute;
+}
+
+body>.timer {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    min-width: 65px;
+    align-items: center;
+}
+
+
+.timerIcon {
+    width: 32px;
+    height: auto;
+}
+
+
+
+#timerDisplay {
+    display: flex;
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+    margin: 0px;
+    color: var(--dark2);
+}
+
+body[data-theme=dark] #timerDisplay {
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+    margin: 0px;
+    color: var(--light2);
+}
+
+#topEnd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 960px;
+    height: 50px;
+    top: 0px;
+    position: absolute;
+
+}
+
+#bottomEnd {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 750px;
+    position: absolute;
+    bottom: 10px;
+}
+
+#restart {
+    position: absolute;
+    border-radius: 20px;
+    border: 0px;
+    height: 40px;
+    width: 80px;
+    top: -60px;
+    background-color: var(--blue);
+    color: #fff;
+}
+
+#middleEnd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 960px;
+    position: relative;
+}
+
+#scoreDisplay {
+    font-size: 256px;
+    padding: 0px;
+}
+
+#scoreDisplay>span {
+    height: fit-content;
+    position: relative;
+    top: -25px;
+}
+
+#coins {
+    position: absolute;
+    bottom: 30px;
+}
+
+
+/*settings menu*/
+
+
+/* when deployed */
+#settings {
+    border-radius: 20px;
+    background-color: var(--light2);
+    position: fixed;
+    top: 10px;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: repeat(8, 64px);
+    grid-template-rows: repeat(2, 64px);
+    gap: 10px;
+    padding: 10px;
+    overflow: hidden;
+    outline: 1px solid var(--light3);
+
+}
+
+body[data-theme=dark] #settings {
+    background-color: var(--dark4);
+}
+
+#settings[data-firstAnimation=false] {
+    animation: deploySettings 1s ease 0s 1 normal none;
+}
+
+@keyframes deploySettings {
+    0% {
+        display: flex;
+        padding: 0px;
+        width: 50px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    20% {
+        display: flex;
+        padding: 0px;
+        width: 50px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    40% {
+        padding: 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: var(--width-when-deployed);
+        height: 50px;
+    }
+
+    60% {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: var(--height-when-deployed);
+    }
+}
+
+
+/* when collapsed */
+#settings[data-space=collapsed] {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+#settings[data-space=collapsed][data-firstAnimation=false] {
+    animation: collapseSettings 1s ease 0s 1 normal backwards;
+}
+
+@keyframes collapseSettings {
+    0% {
+        padding: 10px;
+        display: grid;
+        grid-template-columns: repeat(8, 64px);
+        grid-template-rows: repeat(2, 64px);
+        width: var(--width-when-deployed);
+        height: var(--height-when-deployed);
+    }
+
+    10% {
+        padding: 10px;
+        display: grid;
+        width: var(--width-when-deployed);
+        height: var(--height-when-deployed);
+    }
+
+    40% {
+        display: unset;
+        padding-left: 0px;
+        padding-right: 0px;
+        width: var(--width-when-deployed);
+        height: 50px;
+    }
+
+    60% {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+
+/* settings options */
+
+.options {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: var(--light4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+    min-height: 44px;
+    position: relative;
+}
+
+body[data-theme=dark] .options span svg{
+    fill: #fff;
+}
+
+#settings[data-space=collapsed] .options {
+    display: none;
+    position: relative;
+}
+
+
+body[data-theme=dark] .options {
+    background-color: var(--dark3);
+}
+
+
+
+#settings[data-firstAnimation=false]>.options {
+    animation: deploySettingsOptions 1s ease 0s 1 normal none;
+}
+
+
+@keyframes deploySettingsOptions {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    50% {
+        display: none;
+    }
+
+    60% {
+        display: flex;
+        opacity: 0;
+    }
+
+}
+
+
+#settings[data-space=collapsed][data-firstAnimation=false] .options {
+    animation: collapseSettingsOptions 1s ease 0s 1 normal none;
+}
+
+@keyframes collapseSettingsOptions {
+    0% {
+        display: flex;
+        opacity: 1;
+    }
+
+    10% {
+        display: flex;
+        opacity: 0;
+    }
+
+    40% {
+        display: none;
+        opacity: 0;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
+
+}
+
+
+#settings>.timer {
+    grid-area: 1/1/2/9;
+    gap: 10px;
+}
+
+#settings #theme {
+    grid-area: 2/1/3/2;
+    min-height: 64px;
+}
+
+#sync{
+    grid-area: 2/8/3/9;
+}
+
+#syncDbBtn{
+    background-color: transparent;
+    border: 0px;
+}
+
+body[data-theme=light] .sunIcon {
+    display: none;
+}
+
+body[data-theme=dark] .moonIcon {
+    display: none;
+}
+
+#langDiv{
+    grid-area: 2/4/3/6;
+}
+
+#lang{
+    border: 0px;
+    border-radius: 20px;
+    height: 30px;
+    width: 80px;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+body[data-theme=dark] #lang{
+    background-color: var(--dark2);
+    color: #fff;
+}
+
+#langDiv span.languageIcon{
+    position: absolute;
+    left: 15px;
+}
+
+#settings>.timer>* {
+    border-radius: 20px;
+    border: 0px;
+    height: 30px;
+}
+
+#settings #custom {
+    width: 100px;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#settings>.timer>button {
+    width: 100px;
+    background-color: var(--unselected);
+    transition: .3s;
+    padding: 0px;
+}
+
+body[data-theme=dark] #settings>.timer>*:not(span) {
+    background-color: var(--dark2);
+    color: #fff;
+}
+
+body[data-theme=dark] #settings>.timer>span>svg {
+    fill: #fff;
+}
+
+body[data-theme=dark] #settings>.timer>input::placeholder {
+    color: #fff;
+}
+
+
+#settings>.timer>button:hover {
+    transform: scale(1.1);
+    /* box-shadow: var(--shadow) 5px 5px 4px 0px; */
+    border-radius: 10px;
+}
+
+#settings>.timer>.timerIcon {
+    width: 30px;
+    height: auto;
+    opacity: 1;
+    display: flex;
+}
+
+
+#settings>.settingsIcon {
+    display: none;
+}
+
+#settings[data-space=collapsed]>.settingsIcon {
+    display: unset;
+    position: absolute;
+
+}
+
+#settings[data-firstAnimation=false]>.settingsIcon {
+    animation: deploySettingsIcon 1s ease 0s 1 normal none;
+}
+
+@keyframes deploySettingsIcon {
+    0% {
+        width: 30px;
+        height: 33px;
+        display: unset;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 0px;
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(45deg);
+        top: 0px;
+    }
+
+    20% {
+        position: relative;
+        top: -50px;
+    }
+
+    40% {
+        display: unset;
+        position: relative;
+        top: -50px;
+    }
+
+    50% {
+        top: -50px;
+        display: none;
+    }
+
+}
+
+
+
+#settings[data-space=collapsed][data-firstAnimation=false]>.settingsIcon {
+    animation: collapseSettingsIcon 1s ease 0s 1 normal none;
+}
+
+@keyframes collapseSettingsIcon {
+    0% {
+        display: none;
+    }
+
+    50% {
+        display: none;
+    }
+
+    60% {
+        opacity: 1;
+        position: relative;
+        top: -40px;
+    }
+
+    70% {
+        transform: rotate(45deg);
+        position: relative;
+        top: -40px;
+    }
+
+    90% {
+        transform: rotate(45deg);
+        position: relative;
+        top: 0px;
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+
+
+
+
+.icons>svg {
+    width: 30px;
+    height: auto;
+    fill: var(--dark2);
+}
+
+body[data-theme=dark] .icons>svg {
+    width: 30px;
+    height: auto;
+    fill: var(--light2);
+}
+
+
+
+
+#settings[data-time=endless] #endless {
+    background-color: var(--selected);
+}
+
+#settings[data-time=endless] #endless>span {
+    fill: #fff;
+}
+
+#settings[data-time=t15s] #t15s {
+    background-color: var(--selected);
+    color: #fff;
+}
+
+#settings[data-time=t30s] #t30s {
+    background-color: var(--selected);
+    color: #fff;
+}
+
+#settings[data-time=t60s] #t60s {
+    background-color: var(--selected);
+    color: #fff;
+}
+
+#settings[data-time=t120s] #t120s {
+    background-color: var(--selected);
+    color: #fff;
+}
+
+
+
+#endGame{
+    border-radius: 20px;
+    background-color: var(--blue);
+    height: 30px;
+    outline: none;
+    border: 0px;
+    width: 72px;
+    color: #fff;
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    transition: all .3s;
+    cursor: pointer;
+}
+
+#endGame:hover{
+    border-radius: 10px;
+    transform: scale(1.1);
+}
+
+body[data-isEndless=false] #endGame{
+    display: none;
+}
+
+body[data-status=start] #endGame{
+    display: none;
+}
+
+
+#line250 {
+    width: 1px;
+    height: 100vh;
+    background-color: #000;
+    position: absolute;
+    top: 0px;
+    left: 250px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100vw;
+    display: flex;
+    gap: 5px;
+}
+
+.iconsFooter {
+    height: 40px;
+    width: auto;
+}
+
+body[data-theme=light] .light-mode-logo {
+    display: inline;
+}
+
+body[data-theme=dark] .light-mode-logo {
+    display: none;
+}
+
+body[data-theme=dark] .dark-mode-logo {
+    display: inline;
+}
+
+body[data-theme=light] .dark-mode-logo {
+    display: none;
 }

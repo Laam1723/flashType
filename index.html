@@ -4,20 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>flashType</title>
 </head>
 
-<body>
+<body data-status="start" data-theme="light" data-isendless="false">
+    <!-- <div id="line250"></div> -->
+    <div class="timer">
+        <span class="timerIcon icons"></span>
+        <p id="timerDisplay"><span id="timeElapsed">0s</span>
+            <span id="maxTimeDisplay">/4s</span>
+        </p>
+        <button id="endGame">Finish</button>
+    </div>
+
+    <div id="settings" data-space="collpased" data-firstAnimation="true" data-time="tCustom">
+        <span class="settingsIcon icons"></span>
+        <div class="timer options">
+            <span class="timerIcon icons"></span>
+            <button id="endless" class="timeSelector"><span class="infinityIcon"></span></button>
+            <button id="t15s" class="timeSelector">15s</button>
+            <button id="t30s" class="timeSelector">30s</button>
+            <button id="t60s" class="timeSelector">60s</button>
+            <button id="t120s" class="timeSelector">120s</button>
+            <input type="number" name="custom" id="custom" placeholder="Custom" class="timeSelector">
+        </div>
+
+        <button id="theme" class="options">
+            <span class="sunIcon icons"></span>
+
+            <span class="moonIcon icons"></span>
+        </button>
+
+        <div class="languages options" id="langDiv">
+            <span class="languageIcon"></span>
+            <select name="languages" id="lang">
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+            </select>
+        </div>
+
+        <div class="options" id="sync">
+            <button id="syncDbBtn">
+            <span class="syncDb"></span>
+            </button>
+        </div>
+    </div>
 
     <div id="game">
         <div id="primary" data-order="first" class="words">
-                
         </div>
         <div id="secondary" data-order="second" class="words">
-                
         </div>
     </div>
+
+    <div id="endScreen">
+        <div id="topEnd">
+            <p id="score" class="textsEnd">Your Score:</p>
+        </div>
+        <div id="middleEnd">
+            <p id="scoreDisplay" class="textsEnd"></p>
+            <!-- <p id="coins" class="textsEnd">You earned <span>4 coins</span></p> -->
+        </div>
+        <div id="bottomEnd">
+            <p id="errors" class="textsEnd">Errors: </p>
+            <p id="accur" class="textsEnd">Accuracy: </p>
+            <p id="sR" class="textsEnd">Success rate: </p>
+            <p id="words" class="textsEnd">Total Words: </p>
+            <p id="wpm" class="textsEnd">Words Per Minute: </p>
+            <p id="maxStreak" class="textsEnd">Max Streak: </p>
+            <button id="restart">Restart</button>
+        </div>
+    </div>
+
+    <footer>
+        <div id="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img
+                    src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png"
+                    alt="flashType © 2024 by EnolaK is licensed under CC BY-NC-SA 4.0 "
+                    title="flashType © 2024 by EnolaK is licensed under CC BY-NC-SA 4.0 " class="iconsFooter"></a>
+        </div>
+        <div id="github"><a href="https://github.com/EnolaK64/flashType" target="_blank">
+                <img src="./assets/github-mark.svg" alt="GitHub Mark logo" class="light-mode-logo iconsFooter">
+                <img src="./assets/github-markWhite.svg" alt="GitHub Mark logo" class="dark-mode-logo iconsFooter">
+            </a></div>
+
+        <div id="discord"><a href="https://discord.gg/TSatJ5xDxj" target="_blank" title="Joins us on Discord">
+                <img src="./assets/discord-mark-black.svg" alt="Discord Mark logo" class="light-mode-logo iconsFooter">
+                <img src="./assets/discord-mark-blue.svg" alt="Discord Mark logo" class="dark-mode-logo iconsFooter">
+            </a></div>
+    </footer>
 
     <script src="index.js"></script>
 </body>
