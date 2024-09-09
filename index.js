@@ -38,7 +38,7 @@ let score = 0
 let lettersWritten = 0
 let errors = 0
 let errorsInWord = 0
-let accu = 0
+let accuracy = 0
 let successRate = 0
 let wordsWritten = 0
 let wpm = 0
@@ -51,11 +51,30 @@ let maxStreak = 0
 //language
 let lang = localStorage.getItem("lang")
 const langSelect = document.getElementById("lang")
+const knownLanguages = ["en", "fr", "es"]
 
 //db
 const syncDbBtn = document.getElementById("syncDbBtn")
 
-const knownLanguages = ["en", "fr", "es"]
+//stats
+let stats = localStorage.getItem("stats")
+let saveStats = localStorage.getItem("saveStats")
+
+if (saveStats === null) {
+    saveStats = true
+    localStorage.setItem("saveStats", saveStats)
+}
+else{
+    saveStats = JSON.parse(saveStats)
+}
+
+if (stats === null) {
+    stats = []
+}
+else {
+    stats = JSON.parse(stats)
+}
+
 
 if (lang === null) {
     let userLang = navigator.language
@@ -63,7 +82,7 @@ if (lang === null) {
     lang = userLang[0]
     localStorage.setItem("lang", lang)
 }
-else if (lang.includes(knownLanguages) === false) {
+else if (knownLanguages.includes(lang) === false) {
     lang = "en"
     localStorage.setItem("lang", lang)
 }
@@ -298,7 +317,7 @@ function restartGame() {
     lettersWritten = 0
     errors = 0
     errorsInWord = 0
-    accu = 0
+    accuracy = 0
     successRate = 0
     wordsWritten = 0
     wpm = 0
@@ -427,17 +446,17 @@ function sumArray(array) {
 }
 
 function calcStats() {
-
     if (infinit === false) {
         wpm = Math.round(wordsWritten / (maxTime / 60))
         console.log(wordsWritten / (maxTime / 60))
     }
+
     else {
         wpm = Math.round(wordsWritten / (time / 60))
         console.log(wordsWritten / (time / 60))
     }
 
-    accu = Math.round((1 - (errors / lettersWritten)) * 10000) / 100
+    accuracy = Math.round((1 - (errors / lettersWritten)) * 10000) / 100
 
     successRate = Math.round((1 - (wordsFailed / wordsWritten)) * 10000) / 100
 
@@ -452,14 +471,77 @@ function calcStats() {
         score = 0
     }
 
-    // coins = Math.round(score / 64)
-    // if (coins < 0) {
-    //     coins = 0
-    // }
+
+    //save stat
+
+    const gameStats = []
+    gameStats.push(score)
+    gameStats.push(errors)
+    gameStats.push(successRate)
+    gameStats.push(wordsWritten)
+    gameStats.push(maxStreak)
+    console.log(gameStats);
+
+    updateStat(gameStats);
 
 
+
+let test = 1
+    try {
+        if (saveStats === true) {
+            localStorage.setItem("stats", JSON.stringify(stats))
+        }
+
+
+    }
+    catch (e) {
+        if (e.toString().startsWith("QuotaExceededError")) {
+            if (confirm('you have reached the maximum number of saved games, by clicking on "yes" you will download your save file otherwise future games will no longer be saved in the statistics tab.')) {
+                const pastStats = localStorage.getItem("stats")
+                downloadFile("fTSave.txt", JSON.stringify(pastStats))
+            }
+            else {
+                saveStats = false
+                localStorage.setItem("saveStats", saveStats)
+            }
+        }
+
+    }
     displayStats()
 }
+
+
+
+function downloadFile(filename, content) {
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
+    element.setAttribute("download", filename);
+
+    element.style.display = "none";
+    body.appendChild(element);
+
+    element.click();
+    body.remove(element);
+}
+
+
+function updateStat(gameStats) {
+    const date = Date.now()
+    const score = {
+        "timeStamp": date,
+        "mTime": maxTime,
+        "scores": {
+            "score": gameStats[0],
+            "errors": gameStats[1],
+            "successRate": gameStats[2],
+            "totalWords": gameStats[3],
+            "maxStreak": gameStats[4]
+        }
+    }
+    stats.push(score)
+
+}
+
 
 function updateDisplayedTime() {
     if (infinit == true && maxTime == 0) {
@@ -509,7 +591,7 @@ function displayStats() {
     const scoreText = document.createTextNode(score)
     // const coinsText = document.createTextNode(coins + " coins")
     const errorsText = document.createTextNode(errors)
-    const accuracyText = document.createTextNode(accu + "%")
+    const accuracyText = document.createTextNode(accuracy + "%")
     const wpmText = document.createTextNode(wpm)
     const successRateText = document.createTextNode(successRate + "%")
     const totalWordsText = document.createTextNode(wordsWritten)
