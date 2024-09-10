@@ -460,7 +460,7 @@ function calcStats() {
 
     successRate = Math.round((1 - (wordsFailed / wordsWritten)) * 10000) / 100
 
-    if (isNaN(successRate) || successRate == Infinity) {
+    if (isNaN(successRate) || successRate === Infinity) {
         successRate = 0
     }
 
@@ -529,7 +529,7 @@ function updateStat(gameStats) {
     const date = Date.now()
     const score = {
         "timeStamp": date,
-        "mTime": maxTime,
+        "mTime": time,
         "scores": {
             "score": gameStats[0],
             "errors": gameStats[1],
