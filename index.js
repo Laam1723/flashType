@@ -60,11 +60,14 @@ const syncDbBtn = document.getElementById("syncDbBtn")
 let stats = localStorage.getItem("stats")
 let saveStats = localStorage.getItem("saveStats")
 
+//other
+let gameEnded = false
+
 if (saveStats === null) {
     saveStats = true
     localStorage.setItem("saveStats", saveStats)
 }
-else{
+else {
     saveStats = JSON.parse(saveStats)
 }
 
@@ -117,7 +120,8 @@ async function getData(onlyWords) {
         "./assets/moon.svg",
         "./assets/infinity.svg",
         "./assets/language.svg",
-        "./assets/sync.svg"
+        "./assets/sync.svg",
+        "./assets/stats-icon.svg"
 
     ]
 
@@ -128,7 +132,8 @@ async function getData(onlyWords) {
         ".moonIcon",
         ".infinityIcon",
         ".languageIcon",
-        ".syncDb"
+        ".syncDb",
+        ".stats-icon"
 
     ]
 
@@ -291,8 +296,9 @@ function previousLetter() {
         if (attributRemoved == "wrong") {
             errors--
             errorsInWord--
+            console.log(errorsInWord, wordsFailed)
             if (errorsInWord == 0) {
-                wordsFailed--
+                wordFailedBool = false
             }
         }
 
@@ -302,6 +308,7 @@ function previousLetter() {
 }
 
 function endGame() {
+    gameEnded = true
     playing = false
     body.setAttribute("data-status", "end")
     calcStats()
@@ -326,6 +333,8 @@ function restartGame() {
     wordsLengthAvg = []
     streak = 0
     maxStreak = 0
+    gameEnded = false
+
     init()
     body.setAttribute("data-status", "start")
 }
@@ -479,6 +488,7 @@ function calcStats() {
     gameStats.push(errors)
     gameStats.push(accuracy)
     gameStats.push(wordsWritten)
+    gameStats.push(wordsFailed)
     gameStats.push(maxStreak)
     console.log(gameStats);
 
@@ -486,7 +496,7 @@ function calcStats() {
 
 
 
-let test = 1
+    let test = 1
     try {
         if (saveStats === true) {
             localStorage.setItem("stats", JSON.stringify(stats))
@@ -535,7 +545,8 @@ function updateStat(gameStats) {
             "errors": gameStats[1],
             "accuracy": gameStats[2],
             "totalWords": gameStats[3],
-            "maxStreak": gameStats[4]
+            "wordsFailed": gameStats[4],
+            "maxStreak": gameStats[5]
         }
     }
     stats.push(score)
@@ -619,24 +630,27 @@ function displayStats() {
 restart.addEventListener("click", () => {
     restartGame()
 })
-document.addEventListener('keydown', (e) => {
+addEventListener('keydown', (e) => {
     if (tCustomFocused == true) {
         return
     }
 
-    // alert(e.code)
     if (e.code == "Space") {
-        // console.log("test");
-        //console.log(endScreen.offsetWidth);
+        if (playing === false) {
+            restartGame()
+        }
     }
-    else if (e.code == "Backspace") {
-        previousLetter()
-    }
-    else {
-        keyPressed(e)
+    else if (gameEnded === false) {
+        if (e.code == "Backspace") {
+            previousLetter()
+        }
+        else {
+            keyPressed(e)
+        }
     }
 
 })
+
 
 settings.addEventListener("click", (e) => {
     if (e.target.className == "timeSelector") {

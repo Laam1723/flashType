@@ -46,6 +46,8 @@ body {
     flex-direction: row;
     gap: 10px;
     overflow: hidden;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .frames {
@@ -100,4 +102,18 @@ body {
 
 .frames > *:nth-child(1){
     font-size: 2rem;
+}
+
+#return{
+    border: 0px;
+    border-radius: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--light4);
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,11 +1,8 @@
 const tabs = document.querySelectorAll(".tabs")
-// const test = document.querySelector("#general")
-
 
 
 for (let i = 0; i < tabs.length; i++) {
     tabs[i].addEventListener('click', (e) => {
-        console.log(e)
         const selected = document.querySelector(".selected")
         if (selected != null) {
             selected.classList.remove("selected")
@@ -24,6 +21,7 @@ for (let i = 0; i < tabs.length; i++) {
     })
 }
 
+
 function getStats() {
     const stats = JSON.parse(localStorage.getItem("stats"))
     console.log(stats)
@@ -34,7 +32,7 @@ const newStats = {}
 
 function processStats(stats) {
 
-    if(stats === null){
+    if (stats === null) {
         alert("you doesn't have stats now, playat least 2 times to see your stats")
         return
     }
@@ -44,9 +42,12 @@ function processStats(stats) {
     newStats.score = new Array()
     newStats.accuracy = new Array()
     newStats.totalWords = new Array()
+    newStats.wordsFailed = new Array()
     newStats.games = stats.length
     newStats.mTime = new Array()
     newStats.wpm = new Array()
+    newStats.successRate = new Array()
+
 
 
     for (let i = 0; i < stats.length; i++) {
@@ -54,9 +55,8 @@ function processStats(stats) {
         newStats.maxStreak.push(stats[i].scores.maxStreak)
         newStats.score.push(stats[i].scores.score)
         newStats.accuracy.push(stats[i].scores.accuracy)
-        console.log(newStats.accuracy)
         newStats.totalWords.push(stats[i].scores.totalWords)
-        // newStats.totalWords.push(stats[i].scores.totalWords)
+        newStats.wordsFailed.push(stats[i].scores.wordsFailed)
         newStats.mTime.push(stats[i].mTime)
     }
 
@@ -65,15 +65,34 @@ function processStats(stats) {
         newStats.wpm.push(wpm)
     }
 
+    for (let i = 0; i < newStats.totalWords.length; i++) {
+        console.log((newStats.wordsFailed[i] / newStats.totalWords[i]), newStats.wordsFailed[i], newStats.totalWords[i]);
+        const successRate = Math.round((1 - (newStats.wordsFailed[i] / newStats.totalWords[i])) * 10000) / 100
+        newStats.successRate.push(successRate)
+    }
+
+
+
+
 
 
     getMoreStats(newStats.errors, "errors", true)
     getMoreStats(newStats.maxStreak, "maxStreak")
     getMoreStats(newStats.score, "score")
     getMoreStats(newStats.accuracy, "accuracy", false, false)
+    getMoreStats(newStats.successRate, "successRate", false, false)
     getMoreStats(newStats.totalWords, "totalWords")
     getMoreStats(newStats.wpm, "wpm", false, false)
     console.log(newStats);
+
+    for (let i = 0; i < newStats.mTime.length; i++) {
+        let sum = 0
+        sum += newStats.mTime[i]
+        if (i === newStats.mTime.length - 1) {
+            newStats.total.time = sum
+        }
+    }
+
     displayScores(newStats)
 }
 
@@ -124,24 +143,30 @@ function getMoreStats(array, name, inverted, total) {
 function displayScores() {
 
     const frames = document.querySelectorAll(".frames")
-    console.log(frames[0].id.split("-")[0]);
     createScoreElement("Games played", newStats.games, frames[3])
+
     for (let i = 0; i < frames.length; i++) {
         createScoreElement("Score", newStats[frames[i].id.split("-")[0]].score, frames[i])
         createScoreElement("Errors", newStats[frames[i].id.split("-")[0]].errors, frames[i])
         createScoreElement("TotalWords", newStats[frames[i].id.split("-")[0]].totalWords, frames[i])
+        // createScoreElement("time", newStats[frames[i].id.split("-")[0]].time, frames[i])
+    }
+
+    //doesn't display in total tab
+    for (let i = 0; i < frames.length - 1; i++) {
         createScoreElement("MaxStreak", newStats[frames[i].id.split("-")[0]].maxStreak, frames[i])
-    }
-
-    for (let i = 0; i < frames.length-1; i++) {
         createScoreElement("Accuracy", newStats[frames[i].id.split("-")[0]].accuracy, frames[i])
-        createScoreElement("Wpm", newStats[frames[i].id.split("-")[0]].wpm, frames[i])        
+        createScoreElement("SuccessRate", newStats[frames[i].id.split("-")[0]].successRate, frames[i])
+        createScoreElement("Wpm", newStats[frames[i].id.split("-")[0]].wpm, frames[i])
     }
 
+    //only display on total tab
+    createScoreElement("Total time played", newStats[frames[3].id.split("-")[0]].time, frames[3])
 
 }
 
 function createScoreElement(name, value, elementToPlace) {
+    // debugger
     const element = document.createElement("p")
     const textNode = document.createTextNode(name + ": " + value)
     element.setAttribute("id", name + "-frame")
