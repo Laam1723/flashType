@@ -3,6 +3,7 @@
 body {
     display: flex;
     flex-direction: column;
+    /* font-family: "Ubuntu Mono"; */
 }
 
 .tabs {
@@ -95,4 +96,8 @@ body {
         top: 0px;
         opacity: 100;
     }
+}
+
+.frames > *:nth-child(1){
+    font-size: 2rem;
 }

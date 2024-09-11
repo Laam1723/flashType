@@ -34,11 +34,15 @@ const newStats = {}
 
 function processStats(stats) {
 
+    if(stats === null){
+        alert("you doesn't have stats now, playat least 2 times to see your stats")
+        return
+    }
 
     newStats.errors = new Array()
     newStats.maxStreak = new Array()
     newStats.score = new Array()
-    newStats.successRate = new Array()
+    newStats.accuracy = new Array()
     newStats.totalWords = new Array()
     newStats.games = stats.length
     newStats.mTime = new Array()
@@ -49,8 +53,10 @@ function processStats(stats) {
         newStats.errors.push(stats[i].scores.errors)
         newStats.maxStreak.push(stats[i].scores.maxStreak)
         newStats.score.push(stats[i].scores.score)
-        newStats.successRate.push(stats[i].scores.successRate)
+        newStats.accuracy.push(stats[i].scores.accuracy)
+        console.log(newStats.accuracy)
         newStats.totalWords.push(stats[i].scores.totalWords)
+        // newStats.totalWords.push(stats[i].scores.totalWords)
         newStats.mTime.push(stats[i].mTime)
     }
 
@@ -64,7 +70,7 @@ function processStats(stats) {
     getMoreStats(newStats.errors, "errors", true)
     getMoreStats(newStats.maxStreak, "maxStreak")
     getMoreStats(newStats.score, "score")
-    getMoreStats(newStats.successRate, "successRate", false, false)
+    getMoreStats(newStats.accuracy, "accuracy", false, false)
     getMoreStats(newStats.totalWords, "totalWords")
     getMoreStats(newStats.wpm, "wpm", false, false)
     console.log(newStats);
@@ -119,13 +125,17 @@ function displayScores() {
 
     const frames = document.querySelectorAll(".frames")
     console.log(frames[0].id.split("-")[0]);
+    createScoreElement("Games played", newStats.games, frames[3])
     for (let i = 0; i < frames.length; i++) {
-        createScoreElement("score", newStats[frames[i].id.split("-")[0]].score, frames[i])
-        createScoreElement("errors", newStats[frames[i].id.split("-")[0]].errors, frames[i])
-        createScoreElement("totalWords", newStats[frames[i].id.split("-")[0]].totalWords, frames[i])
-        createScoreElement("maxStreak", newStats[frames[i].id.split("-")[0]].maxStreak, frames[i])
-        createScoreElement("successRate", newStats[frames[i].id.split("-")[0]].successRate, frames[i])
-        createScoreElement("wpm", newStats[frames[i].id.split("-")[0]].wpm, frames[i])
+        createScoreElement("Score", newStats[frames[i].id.split("-")[0]].score, frames[i])
+        createScoreElement("Errors", newStats[frames[i].id.split("-")[0]].errors, frames[i])
+        createScoreElement("TotalWords", newStats[frames[i].id.split("-")[0]].totalWords, frames[i])
+        createScoreElement("MaxStreak", newStats[frames[i].id.split("-")[0]].maxStreak, frames[i])
+    }
+
+    for (let i = 0; i < frames.length-1; i++) {
+        createScoreElement("Accuracy", newStats[frames[i].id.split("-")[0]].accuracy, frames[i])
+        createScoreElement("Wpm", newStats[frames[i].id.split("-")[0]].wpm, frames[i])        
     }
 
 
@@ -133,8 +143,8 @@ function displayScores() {
 
 function createScoreElement(name, value, elementToPlace) {
     const element = document.createElement("p")
-    const textNode = document.createTextNode(name + ":" + value)
-    element.setAttribute("id", name)
+    const textNode = document.createTextNode(name + ": " + value)
+    element.setAttribute("id", name + "-frame")
     element.appendChild(textNode)
     elementToPlace.appendChild(element)
 }

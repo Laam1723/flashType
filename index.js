@@ -477,7 +477,7 @@ function calcStats() {
     const gameStats = []
     gameStats.push(score)
     gameStats.push(errors)
-    gameStats.push(successRate)
+    gameStats.push(accuracy)
     gameStats.push(wordsWritten)
     gameStats.push(maxStreak)
     console.log(gameStats);
@@ -533,7 +533,7 @@ function updateStat(gameStats) {
         "scores": {
             "score": gameStats[0],
             "errors": gameStats[1],
-            "successRate": gameStats[2],
+            "accuracy": gameStats[2],
             "totalWords": gameStats[3],
             "maxStreak": gameStats[4]
         }
