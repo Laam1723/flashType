@@ -68,7 +68,12 @@ function processStats(stats) {
     for (let i = 0; i < newStats.totalWords.length; i++) {
         console.log((newStats.wordsFailed[i] / newStats.totalWords[i]), newStats.wordsFailed[i], newStats.totalWords[i]);
         const successRate = Math.round((1 - (newStats.wordsFailed[i] / newStats.totalWords[i])) * 10000) / 100
-        newStats.successRate.push(successRate)
+        if(isNaN(successRate)){
+            newStats.successRate.push(0)
+        }
+        else{
+            newStats.successRate.push(successRate)
+        }
     }
 
 
@@ -148,20 +153,22 @@ function displayScores() {
     for (let i = 0; i < frames.length; i++) {
         createScoreElement("Score", newStats[frames[i].id.split("-")[0]].score, frames[i])
         createScoreElement("Errors", newStats[frames[i].id.split("-")[0]].errors, frames[i])
-        createScoreElement("TotalWords", newStats[frames[i].id.split("-")[0]].totalWords, frames[i])
+        createScoreElement("Total words", newStats[frames[i].id.split("-")[0]].totalWords, frames[i])
         // createScoreElement("time", newStats[frames[i].id.split("-")[0]].time, frames[i])
     }
 
     //doesn't display in total tab
     for (let i = 0; i < frames.length - 1; i++) {
-        createScoreElement("MaxStreak", newStats[frames[i].id.split("-")[0]].maxStreak, frames[i])
+        createScoreElement("Max streak", newStats[frames[i].id.split("-")[0]].maxStreak, frames[i])
         createScoreElement("Accuracy", newStats[frames[i].id.split("-")[0]].accuracy, frames[i])
-        createScoreElement("SuccessRate", newStats[frames[i].id.split("-")[0]].successRate, frames[i])
+        createScoreElement("Success rate", newStats[frames[i].id.split("-")[0]].successRate, frames[i])
         createScoreElement("Wpm", newStats[frames[i].id.split("-")[0]].wpm, frames[i])
     }
 
     //only display on total tab
     createScoreElement("Total time played", newStats[frames[3].id.split("-")[0]].time, frames[3])
+    const timePlayed = document.getElementById("Total-time-played-frame")
+    timePlayed.innerHTML += "s"
 
 }
 
@@ -169,7 +176,7 @@ function createScoreElement(name, value, elementToPlace) {
     // debugger
     const element = document.createElement("p")
     const textNode = document.createTextNode(name + ": " + value)
-    element.setAttribute("id", name + "-frame")
+    element.setAttribute("id", name.split(" ").join("-") + "-frame")
     element.appendChild(textNode)
     elementToPlace.appendChild(element)
 }
