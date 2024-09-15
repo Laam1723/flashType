@@ -1,0 +1,81 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.account{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 400px;
+    background-color: var(--light1);
+    border-radius: 20px;
+    gap: 40px;
+}
+
+.input{
+    height: 20px;
+    width: 250px;
+    border-radius: 20px;
+    border: 0px;
+    padding: 10px;
+    position: relative;
+    top: -30px;
+}
+
+
+#signupPage > h1{
+    position: absolute;
+    top: 10px;
+    margin-bottom: 0px;
+}
+
+#submit{
+    border: 0px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 10px;
+    background-color: var(--blue);
+    color: #fff;
+    height: 40px;
+    width: 100px;
+}
+
+.messages{
+    border-radius: 20px;
+    color: #fff;
+}
+
+#errors{
+    background-color: var(--error);
+}
+
+
+#errors > *{
+    margin: 20px;
+}
+
+.shake{
+    animation: shake .15s linear 0s 3 normal none;
+}
+
+@keyframes shake {
+    0%{
+        transform: translate(3px,0px);
+    }
+
+    50%{
+        transform: translate(-3px,0px);
+    }
+
+    100%{
+        transform: translate(0px,0px);
+    }
+    
+}
