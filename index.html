@@ -14,6 +14,14 @@
 
 <body data-status="start" data-theme="light" data-isendless="false">
     <!-- <div id="line250"></div> -->
+    <div id="welcomeScreen">
+        <img src="./assets/logoFTSVGv2.svg" alt="flashType logo">
+        <p>Choose a game mode</p>
+        <div id="choice">
+            <button id="offline">Offline</button>
+            <button id="online">Online</button>
+        </div>
+    </div>
     <div class="timer">
         <span class="timerIcon icons"></span>
         <p id="timerDisplay"><span id="timeElapsed">0s</span>
@@ -51,9 +59,14 @@
             </select>
         </div>
 
+        <div class="options" id="changeMode">
+            <span class="onlineIcon icons"></span>
+            <span class="offlineIcon icons"></span>
+        </div>
+
         <div class="options" id="sync">
             <button id="syncDbBtn">
-            <span class="syncDb"></span>
+                <span class="syncDb"></span>
             </button>
         </div>
     </div>

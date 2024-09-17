@@ -529,6 +529,7 @@ body[data-theme=dark] #settings {
     border: 0px;
     min-height: 44px;
     position: relative;
+    cursor: pointer;
 }
 
 body[data-theme=dark] .options span svg{
@@ -899,3 +900,59 @@ body[data-theme=dark] .dark-mode-logo {
 body[data-theme=light] .dark-mode-logo {
     display: none;
 }
+
+#welcomeScreen{
+    position: fixed;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+    width: 960px;
+    height: 500px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+#welcomeScreen > img{
+    width: 25vw;
+    height: 25vh;
+    position: absolute;
+    top: 0px;
+}
+
+#choice{
+    position: absolute;
+    bottom: 70px;
+    display: flex;
+    gap: 20px;
+}
+
+#welcomeScreen button{
+    width: 160px;
+    height: 80px;
+    border-radius: 100px;
+    bottom: 10px;
+    border: 0px;
+    font-family: inherit;
+    font-size: xx-large;
+    cursor: pointer;
+    background-color: var(--light1);
+}
+
+#welcomeScreen > p {
+    font-size: xx-large;
+}
+
+.online .offlineIcon{
+    display: none;
+}
+
+.online .onlineIcon{
+    display: none;
+}
+/* 
+#accept{
+    background-color: var(--blue);
+    color: #fff;
+} */

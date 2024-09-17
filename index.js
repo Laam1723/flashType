@@ -29,15 +29,15 @@ let intervalID
 let infinit = false
 let firstLetter = true
 
-if(maxTime === null){
+if (maxTime === null) {
     maxTime = 15
-    localStorage.setItem("maxTime",maxTime)
+    localStorage.setItem("maxTime", maxTime)
 }
-else{
+else {
     JSON.parse(maxTime)
 }
 
-if(maxTime === "0"){
+if (maxTime === "0") {
     infinit = true
 }
 
@@ -79,6 +79,57 @@ if (themeSelected === null) {
     localStorage.setItem("theme", themeSelected)
 }
 body.setAttribute("theme", themeSelected)
+
+//multiplayer
+let online = localStorage.getItem("online")
+let showedWLCSreen = localStorage.getItem("welcomeScreen")
+let token = sessionStorage.getItem("token")
+if(online === null){
+    online = false
+    showedWLCSreen = null
+}
+else{
+    online = JSON.parse(online)
+}
+
+console.log(token === null && online === true, online);
+
+if(token === null && online === true){
+    redirect("./mp")
+}
+const welcomeScreen = document.getElementById("welcomeScreen")
+
+
+if (showedWLCSreen === null) {
+    welcomeScreen.style.display = "flex"
+}
+
+const offlineBtn = document.getElementById("offline")
+const onlineBtn = document.getElementById("online")
+
+offlineBtn.addEventListener("click", () => {
+    online = false
+    welcomeScreen.style.display = "none"
+    localStorage.setItem("welcomeScreen", false)
+    localStorage.setItem("online", false)
+})
+
+onlineBtn.addEventListener("click", () => {
+
+    online = true
+    welcomeScreen.style.display = "none"
+    localStorage.setItem("welcomeScreen", false)
+    localStorage.setItem("online", true)
+    redirect("./mp")
+})
+
+
+function redirect(url){
+    const redirect = document.createElement("a")
+    redirect.setAttribute("href", url)
+    redirect.style.display = "none"
+    redirect.click()
+}
 
 //other
 let gameEnded = false
@@ -141,7 +192,9 @@ async function getData(onlyWords) {
         "./assets/infinity.svg",
         "./assets/language.svg",
         "./assets/sync.svg",
-        "./assets/stats-icon.svg"
+        "./assets/stats-icon.svg",
+        "./assets/online.svg",
+        "./assets/offline.svg"
 
     ]
 
@@ -153,7 +206,9 @@ async function getData(onlyWords) {
         ".infinityIcon",
         ".languageIcon",
         ".syncDb",
-        ".stats-icon"
+        ".stats-icon",
+        ".onlineIcon",
+        ".offilineIcon"
 
     ]
 
@@ -520,7 +575,8 @@ function calcStats() {
     let test = 1
     try {
         if (saveStats === true) {
-            localStorage.setItem("stats", JSON.stringify(stats))
+            console.log(stats)
+            // localStorage.setItem("stats", JSON.stringify(stats))
         }
 
 
@@ -541,7 +597,31 @@ function calcStats() {
     displayStats()
 }
 
+function formatBody(score) {
+    const body = {
+        "token": sessionStorage.getItem("token"),
+        "stats": score
+    }
+    console.log(body)
+    postJSON(body)
+}
 
+async function postJSON(data) {
+    try {
+        const reponse = await fetch("http://server.enolak.fr:45000/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const resultat = await reponse.json();
+        return resultat
+    } catch (erreur) {
+        console.error(erreur);
+    }
+}
 
 function downloadFile(filename, content) {
     const element = document.createElement("a");
@@ -570,7 +650,12 @@ function updateStat(gameStats) {
             "maxStreak": gameStats[5]
         }
     }
-    stats.push(score)
+    if (online === true) {
+        formatBody(score)
+    }
+    else {
+        stats.push(score)
+    }
 
 }
 
@@ -795,6 +880,7 @@ syncDbBtn.addEventListener("click", (e) => {
     getData(true)
     e.stopPropagation()
 })
+
 
 
 let UA = navigator.userAgent
