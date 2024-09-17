@@ -23,11 +23,23 @@ let words = localStorage.getItem("words")
 let list
 let listInv
 let errorMode = true
-let maxTime = 15
+let maxTime = localStorage.getItem("maxTime")
 let time = 0
 let intervalID
 let infinit = false
 let firstLetter = true
+
+if(maxTime === null){
+    maxTime = 15
+    localStorage.setItem("maxTime",maxTime)
+}
+else{
+    JSON.parse(maxTime)
+}
+
+if(maxTime === "0"){
+    infinit = true
+}
 
 updateDisplayedTime()
 
@@ -59,6 +71,14 @@ const syncDbBtn = document.getElementById("syncDbBtn")
 //stats
 let stats = localStorage.getItem("stats")
 let saveStats = localStorage.getItem("saveStats")
+
+//theme system
+let themeSelected = localStorage.getItem("theme")
+if (themeSelected === null) {
+    themeSelected = "light"
+    localStorage.setItem("theme", themeSelected)
+}
+body.setAttribute("theme", themeSelected)
 
 //other
 let gameEnded = false
@@ -246,6 +266,7 @@ function keyPressed(event) {
         errors++
         errorsInWord++
         wordFailedBool = true
+        console.log(event.code)
         nextLetter()
     }
 }
@@ -673,28 +694,33 @@ settings.addEventListener("click", (e) => {
 endless.addEventListener("click", (e) => {
     maxTime = 0
     infinit = true
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
     e.stopPropagation()
 })
 
 t15s.addEventListener("click", () => {
     maxTime = 15
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t30s.addEventListener('click', () => {
     maxTime = 30
 
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t60s.addEventListener('click', () => {
     maxTime = 60
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t120s.addEventListener('click', () => {
     maxTime = 120
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
@@ -738,11 +764,15 @@ theme.addEventListener("click", (e) => {
 
     if (theme == "dark") {
         body.setAttribute("data-theme", "light")
+        localStorage.setItem("theme", "light")
     }
 
     else if (theme == "light") {
         body.setAttribute("data-theme", "dark")
+        localStorage.setItem("theme", "dark")
+
     }
+
 
     e.stopPropagation()
 })
