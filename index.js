@@ -84,6 +84,7 @@ body.setAttribute("theme", themeSelected)
 let online = localStorage.getItem("online")
 let showedWLCSreen = localStorage.getItem("welcomeScreen")
 let token = sessionStorage.getItem("token")
+const changeMode = document.getElementById("changeMode")
 if(online === null){
     online = false
     showedWLCSreen = null
@@ -94,9 +95,7 @@ else{
 
 console.log(token === null && online === true, online);
 
-if(token === null && online === true){
-    redirect("./mp")
-}
+checkToken()
 const welcomeScreen = document.getElementById("welcomeScreen")
 
 
@@ -123,12 +122,24 @@ onlineBtn.addEventListener("click", () => {
     redirect("./mp")
 })
 
+function checkToken(){
+    if(token === null && online === true){
+        redirect("./mp")
+    }
+}
 
 function redirect(url){
     const redirect = document.createElement("a")
     redirect.setAttribute("href", url)
     redirect.style.display = "none"
     redirect.click()
+}
+
+if(online === true){
+    changeMode.classList.add("online")
+}
+else{
+    changeMode.classList.add("offline")
 }
 
 //other
@@ -208,7 +219,7 @@ async function getData(onlyWords) {
         ".syncDb",
         ".stats-icon",
         ".onlineIcon",
-        ".offilineIcon"
+        ".offlineIcon"
 
     ]
 
@@ -878,6 +889,24 @@ langSelect.addEventListener("change", () => {
 
 syncDbBtn.addEventListener("click", (e) => {
     getData(true)
+    e.stopPropagation()
+})
+
+
+changeMode.addEventListener("click",(e)=>{
+    if(Array.from(e.currentTarget.classList).includes("online")){
+        online = false
+        e.currentTarget.classList.add("offline")
+        e.currentTarget.classList.remove("online")
+        localStorage.setItem("online", false)
+    }
+    else if(Array.from(e.currentTarget.classList).includes("offline")){
+        online = true
+        e.currentTarget.classList.add("online")
+        e.currentTarget.classList.remove("offline")
+        localStorage.setItem("online", true)
+        checkToken()
+    }
     e.stopPropagation()
 })
 

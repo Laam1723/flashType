@@ -905,8 +905,8 @@ body[data-theme=light] .dark-mode-logo {
     position: fixed;
     z-index: 200;
     backdrop-filter: blur(10px);
-    width: 960px;
-    height: 500px;
+    width: 100vw;
+    height: 100vh;
     display: none;
     justify-content: center;
     align-items: center;
@@ -948,7 +948,7 @@ body[data-theme=light] .dark-mode-logo {
     display: none;
 }
 
-.online .onlineIcon{
+.offline .onlineIcon{
     display: none;
 }
 /* 
