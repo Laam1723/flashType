@@ -8,31 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/logoFTSVGv2.svg" type="image/x-icon">
     <title>Stats</title>
 </head>
 
 <body>
     <a href="/" id="return"><img src="../assets/back-arrow.svg" alt="arrow back"></a>
     <div id="stats-displayer">
-        <div id="tabs-container">
-            
+        <div id="tabs-container" class="tabs-container">
+
             <button class="tabs selected" id="best">
                 Best
             </button>
             <button class="tabs" id="worst">
                 Worst
             </button>
-            <button id="avg" class="tabs">
+            <button class="tabs" id="avg">
                 Average
             </button>
             <button class="tabs" id="total">
                 Total
             </button>
         </div>
-        <div id="frames-container">
-            <!-- <div id="general-frame" class="frames frame-select">
-                
-            </div> -->
+
+        <div id="frames-container-personal" class="frames-container">
+
             <div id="best-frame" class="frames frame-select"></div>
             <div id="worst-frame" class="frames"></div>
             <div id="avg-frame" class="frames"></div>
@@ -40,7 +40,9 @@
         </div>
     </div>
 
-    <script src="index.js"></script>
+    <a href="./leaderboard/" id="switch" class="button">See leaderboard stats</a>
+
+    <script type="module" src="index.js"></script>
 </body>
 
 </html>

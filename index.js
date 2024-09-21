@@ -1,3 +1,5 @@
+import { redirect } from "./lib/redirect.js"
+
 const primary = document.getElementById("primary")
 const secondary = document.getElementById("secondary")
 const body = document.body
@@ -85,11 +87,11 @@ let online = localStorage.getItem("online")
 let showedWLCSreen = localStorage.getItem("welcomeScreen")
 let token = sessionStorage.getItem("token")
 const changeMode = document.getElementById("changeMode")
-if(online === null){
+if (online === null) {
     online = false
     showedWLCSreen = null
 }
-else{
+else {
     online = JSON.parse(online)
 }
 
@@ -122,23 +124,17 @@ onlineBtn.addEventListener("click", () => {
     redirect("./mp")
 })
 
-function checkToken(){
-    if(token === null && online === true){
+function checkToken() {
+    if (token === null && online === true) {
         redirect("./mp")
     }
 }
 
-function redirect(url){
-    const redirect = document.createElement("a")
-    redirect.setAttribute("href", url)
-    redirect.style.display = "none"
-    redirect.click()
-}
 
-if(online === true){
+if (online === true) {
     changeMode.classList.add("online")
 }
-else{
+else {
     changeMode.classList.add("offline")
 }
 
@@ -225,6 +221,7 @@ async function getData(onlyWords) {
 
     for (let i = 0; i < elements.length; i++) {
         const fetchedSVG = await fetch(SVGs[i])
+
         const responseSVG = await fetchedSVG.text()
         const selectedElement = document.querySelectorAll(elements[i])
 
@@ -893,14 +890,14 @@ syncDbBtn.addEventListener("click", (e) => {
 })
 
 
-changeMode.addEventListener("click",(e)=>{
-    if(Array.from(e.currentTarget.classList).includes("online")){
+changeMode.addEventListener("click", (e) => {
+    if (Array.from(e.currentTarget.classList).includes("online")) {
         online = false
         e.currentTarget.classList.add("offline")
         e.currentTarget.classList.remove("online")
         localStorage.setItem("online", false)
     }
-    else if(Array.from(e.currentTarget.classList).includes("offline")){
+    else if (Array.from(e.currentTarget.classList).includes("offline")) {
         online = true
         e.currentTarget.classList.add("online")
         e.currentTarget.classList.remove("offline")
@@ -912,12 +909,14 @@ changeMode.addEventListener("click",(e)=>{
 
 
 
+
+
 let UA = navigator.userAgent
-const UAP = document.getElementById("UA")
 UA = UA.split(" ")
 
-for (element of UA) {
+for (let element of UA) {
     if (element.startsWith("Mobile")) {
         alert("Warning phones aren't compatible please use a computer instead.")
     }
 }
+

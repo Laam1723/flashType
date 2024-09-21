@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="../../assets/logoFTSVGv2.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <title>Leaderboard</title>
+</head>
+
+<body>
+
+    <div id="stats-displayer-leaderboard">
+        <div id="tabs-container-leaderboard" class="tabs-container">
+            <button class="tabs selected" id="score">
+                Score
+            </button>
+            <button class="tabs" id="totalWords">
+                Total words
+            </button>
+            <button class="tabs" id="maxStreak">
+                Max streak
+            </button>
+            <button class="tabs" id="wpm">
+                WPM
+            </button>
+            <button class="tabs" id="gamesPlayed">
+                Games played
+            </button>
+            <button class="tabs" id="timePlayed">
+                Time played
+            </button>
+        </div>
+        <div id="frames-container-leaderboard" class="frames-container">
+
+            <div id="score-frame" class="frames frame-select"></div>
+            <div id="totalWords-frame" class="frames"></div>
+            <div id="maxStreak-frame" class="frames"></div>
+            <div id="wpm-frame" class="frames"></div>
+            <div id="gamesPlayed-frame" class="frames"></div>
+            <div id="timePlayed-frame" class="frames"></div>
+        </div>
+    </div>
+
+    <a href="./leaderboard/" id="switch" class="button">See leaderboard stats</a>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
