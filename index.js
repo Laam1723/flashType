@@ -174,18 +174,16 @@ langSelect.value = lang
 
 
 
-if (words == undefined) {
-
-}
-else {
+if ((words === undefined) === false) {
+    console.log("oui");
     words = JSON.parse(words)
 }
 
 async function getData(onlyWords) {
     const response = await fetch("./data.json") // data.json is exactly the same data as my hangman
     words = await response.json()
-    //console.log(words);
     localStorage.setItem("words", JSON.stringify(words))
+    // ici ecrire le reste
     if (onlyWords === true) {
         return
     }
@@ -292,7 +290,9 @@ function init() {
     writeWord(nextWord, secondary)
     const caret = document.createElement("span")
     caret.setAttribute("id", "caret")
-    primary.children[0].appendChild(caret)
+    primary.children[1].appendChild(caret)
+    console.log(primary.children);
+    
     localStorage.setItem("currentWord", JSON.stringify(currentWord))
     localStorage.setItem("nextWord", JSON.stringify(nextWord))
     list = primary.children
