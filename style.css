@@ -430,7 +430,7 @@ body[data-theme=dark] #settings {
 }
 
 #settings[data-firstAnimation=false] {
-    animation: deploySettings 1s ease 0s 1 normal none;
+    animation: deploySettings 1s ease 0s 1 normal forwards;
 }
 
 @keyframes deploySettings {
@@ -462,6 +462,13 @@ body[data-theme=dark] #settings {
 
     60% {
         padding-top: 10px;
+        padding-bottom: 10px;
+        width: var(--width-when-deployed);
+        height: var(--height-when-deployed);
+    }
+    100%{
+        padding-top: 10px;
+        width: var(--width-when-deployed);
         padding-bottom: 10px;
         height: var(--height-when-deployed);
     }
@@ -709,7 +716,7 @@ body[data-theme=dark] #settings>.timer>input::placeholder {
 }
 
 #settings[data-firstAnimation=false]>.settingsIcon {
-    animation: deploySettingsIcon 1s ease 0s 1 normal none;
+    animation: deploySettingsIcon 1s ease 0s 1 normal forwards;
 }
 
 @keyframes deploySettingsIcon {
@@ -735,7 +742,7 @@ body[data-theme=dark] #settings>.timer>input::placeholder {
     }
 
     40% {
-        display: unset;
+        display: none;
         position: relative;
         top: -50px;
     }
