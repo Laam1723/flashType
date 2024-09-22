@@ -76,10 +76,17 @@ for (let i = 0; i < submitButton.length; i++) {
 function getData(element) {
     const username = element.querySelector(".username")
     const password = element.querySelector(".password")
+    const checkbox = element.querySelector("#checkbox")
+    
+    if(element.id === "signupPage"){
+        if(checkbox.checked === false)
+            issue("You need to accept the policy", element.querySelector(".messages"))
+    }
     if (username.value === "" || password.value === "") {
         issue("Please fill all fields", element.querySelector(".messages"))
         console.error("Empty field")
     }
+    
     else {
         console.log(element.id)
         mode = element.id.split("P")[0]

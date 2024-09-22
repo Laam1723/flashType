@@ -615,6 +615,10 @@ function calcStats() {
 }
 
 function formatBody(score) {
+    if(sessionStorage.getItem("token") === null){
+        redirect("./mp")
+        return
+    }
     const body = {
         "token": sessionStorage.getItem("token"),
         "stats": score

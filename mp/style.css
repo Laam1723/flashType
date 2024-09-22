@@ -18,6 +18,10 @@
     border: 0px;
     padding: 10px;
     position: relative;
+    top: 10px;
+}
+
+#loginPage .input {
     top: -30px;
 }
 
@@ -46,6 +50,8 @@
 
 .messages{
     background-color: var(--error);
+    position: relative;
+    top: 30px;
 }
 
 

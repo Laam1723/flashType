@@ -886,6 +886,11 @@ footer {
     width: 100vw;
     display: flex;
     gap: 5px;
+    align-items: end;
+}
+
+footer > #privacyPolicy{
+    margin: 0px 0px 10px 0px;
 }
 
 .iconsFooter {
