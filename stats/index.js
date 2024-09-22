@@ -52,6 +52,7 @@ async function postJSON(donnees) {
         return resultat
     } catch (erreur) {
         console.error("Erreur :", erreur);
+        alert("you doesn't have stats now, play at least 2 times to see your stats")
     }
 }
 
