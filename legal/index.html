@@ -1,15 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
     <title>Privacy Policy</title>
 </head>
+
 <body>
+    <p id="back"><img src="../assets/back-arrow.svg" alt="back arrow">Go back</p>
     <h1>Privacy Policy</h1>
     <section>
-        <p></p>
+        <h2>Introduction</h2>
+        <p>First of all, in the following privacy statement you will find out what information we collect and how we use
+            it.</p>
+    </section>
+    <section>
+        <h2>Table of contents</h2>
+        <a href="#dataCollection">Data collection</a>
+        <a href="#dataProcessing">Data processing</a>
+        <a href="#contact">Contact</a>
 
     </section>
+
+    <section id="dataCollection">
+        <h2>Data Collection</h2>
+        <p>
+            The data we collect are, your username that you enter when creating your account, your password and the
+            statistics of each completed game.
+            The collected statistics are composed of:
+            <li>Final points</li>
+            <li>Accuracy</li>
+            <li>Number of errors</li>
+            <li>Longest sequence of words without mistakes in a row</li>
+            <li>Total number of words written during the game</li>
+            <li>Total number of failed words</li>
+            <li>Date in seconds of the end of the game</li>
+            <li>Time spent on the game</li>
+        </p>
+    </section>
+
+    <section id="dataProcessing"></section>
+    <h2>Data processing</h2>
+    Usernames and statistics are processed by us on our server and by other players to be displayed in the ranking, for
+    the rest, i.e. passwords, they are only stored on our server.
+    </section>
+
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>contact@enolak.fr</p>
+    </section>
+
+<script>
+    const back = document.getElementById("back")
+    back.addEventListener("click",()=>{
+        history.back()
+    })
+</script>
+
 </body>
+
 </html>

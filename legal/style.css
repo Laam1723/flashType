@@ -1,0 +1,42 @@
+body {
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    width: 1000px;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#back{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    align-self: center;
+    font-size: 100px;
+    top: 40px;
+    margin: 0px;
+    position: absolute;
+    color: var(--blue);
+}
+
+a,
+p{
+    display: block;
+    margin: 10px;
+    text-decoration: none;
+}
+
+li{
+    font-size: large;
+
+    list-style-type: upper-latin;
+
+}

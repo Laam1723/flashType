@@ -2,7 +2,7 @@ import {redirect} from "../lib/redirect.js"
 
 const tabs = document.querySelectorAll(".tabs")
 let online = JSON.parse(localStorage.getItem("online"))
-const leaderboard = false
+
 
 
 
@@ -39,7 +39,7 @@ function createBody() {
 
 async function postJSON(donnees) {
     try {
-        const reponse = await fetch("http://server.enolak.fr:45000/stats", {
+        const reponse = await fetch("http://server.enolak.fr:47000/stats", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
