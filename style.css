@@ -95,7 +95,7 @@ div[data-order=first] {
 }
 
 body[data-animation=true] div[data-order=first] {
-    animation: toFirst 0.4s ease 0s 1 normal none;
+    animation: toFirst 0.4s ease 0s 1 normal backwards;
 }
 
 div[data-order=second] {
@@ -127,6 +127,7 @@ body[data-theme=dark] div[data-order=second] {
     }
 
     100% {
+        width: max-content;
         height: 80px;
     }
 }

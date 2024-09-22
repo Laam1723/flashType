@@ -179,11 +179,19 @@ if ((words === undefined) === false) {
     words = JSON.parse(words)
 }
 
+function removeLoaders(){
+    const loarders = document.querySelectorAll(".loader")
+    for (let i = 0; i < loarders.length; i++) {
+        loarders[i].remove()
+    }
+        
+}
+
 async function getData(onlyWords) {
     const response = await fetch("./data.json") // data.json is exactly the same data as my hangman
     words = await response.json()
     localStorage.setItem("words", JSON.stringify(words))
-    // ici ecrire le reste
+
     if (onlyWords === true) {
         return
     }
@@ -264,6 +272,7 @@ async function getData(onlyWords) {
         element.innerHTML = responseMoon
     }
 
+    removeLoaders()
 
     init()
 }
@@ -290,8 +299,8 @@ function init() {
     writeWord(nextWord, secondary)
     const caret = document.createElement("span")
     caret.setAttribute("id", "caret")
-    primary.children[1].appendChild(caret)
-    console.log(primary.children);
+    primary.children[0].appendChild(caret)
+    console.log(primary.children[0]);
     
     localStorage.setItem("currentWord", JSON.stringify(currentWord))
     localStorage.setItem("nextWord", JSON.stringify(nextWord))
@@ -404,7 +413,7 @@ function restartGame() {
     caretPos = 0
     firstLetter = true
     score = 0
-    coins = localStorage.getItem("coins")
+    // coins = localStorage.getItem("coins")
     lettersWritten = 0
     errors = 0
     errorsInWord = 0
