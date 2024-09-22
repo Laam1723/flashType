@@ -568,7 +568,7 @@ function calcStats() {
 
 
 
-    score = Math.round((wpm * maxStreak * sumArray(wordsLengthAvg)) - (errors * wordsFailed * 2))
+    score = Math.round((wpm * (accuracy/10) *sumArray(wordsLengthAvg)) - (errors * 2))
     if (score == Infinity || isNaN(score)) {
         score = 0
     }
