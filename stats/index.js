@@ -1,4 +1,11 @@
+import {redirect} from "../lib/redirect.js"
+
 const tabs = document.querySelectorAll(".tabs")
+let online = JSON.parse(localStorage.getItem("online"))
+
+
+
+
 
 
 for (let i = 0; i < tabs.length; i++) {
@@ -13,17 +20,54 @@ for (let i = 0; i < tabs.length; i++) {
         if (frameSelected != null) {
             frameSelected.classList.remove("frame-select")
         }
-
+        console.log(e.target.id + "-frame")
         const frame = document.getElementById(e.target.id + "-frame")
         e.target.classList.add("selected")
+        console.log(frame);
+        
         frame.classList.add("frame-select")
-        // console.log(selected.id)
     })
 }
 
+function createBody() {
+    const body = {
+        "token": sessionStorage.getItem("token"),
+    }
+    console.log(body)
+    return postJSON(body)
+}
 
-function getStats() {
-    const stats = JSON.parse(localStorage.getItem("stats"))
+async function postJSON(donnees) {
+    try {
+        const reponse = await fetch("http://server.enolak.fr:47000/stats", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(donnees),
+        });
+
+        const resultat = await reponse.json();
+        console.log(resultat);
+        return resultat
+    } catch (erreur) {
+        console.error("Erreur :", erreur);
+        alert("you doesn't have stats now, play at least 2 times to see your stats")
+    }
+}
+
+async function getStats() {
+    let stats
+    if (online === true) {
+        stats = await createBody()
+        if (stats === false) {
+            redirect("../mp")
+        }
+
+    }
+    else {
+        stats = JSON.parse(localStorage.getItem("stats"))
+    }
     console.log(stats)
     processStats(stats)
 }
@@ -33,7 +77,7 @@ const newStats = {}
 function processStats(stats) {
 
     if (stats === null) {
-        alert("you doesn't have stats now, playat least 2 times to see your stats")
+        alert("you doesn't have stats now, play at least 2 times to see your stats")
         return
     }
 
@@ -66,12 +110,12 @@ function processStats(stats) {
     }
 
     for (let i = 0; i < newStats.totalWords.length; i++) {
-        console.log((newStats.wordsFailed[i] / newStats.totalWords[i]), newStats.wordsFailed[i], newStats.totalWords[i]);
+        // console.log((newStats.wordsFailed[i] / newStats.totalWords[i]), newStats.wordsFailed[i], newStats.totalWords[i]);
         const successRate = Math.round((1 - (newStats.wordsFailed[i] / newStats.totalWords[i])) * 10000) / 100
-        if(isNaN(successRate)){
+        if (isNaN(successRate)) {
             newStats.successRate.push(0)
         }
-        else{
+        else {
             newStats.successRate.push(successRate)
         }
     }
@@ -140,7 +184,6 @@ function getMoreStats(array, name, inverted, total) {
     sum = sum / array.length
     newStats.avg[name] = Math.round(sum)
 
-    console.log();
 
 }
 
@@ -149,6 +192,7 @@ function displayScores() {
 
     const frames = document.querySelectorAll(".frames")
     createScoreElement("Games played", newStats.games, frames[3])
+    
 
     for (let i = 0; i < frames.length; i++) {
         createScoreElement("Score", newStats[frames[i].id.split("-")[0]].score, frames[i])
@@ -176,6 +220,7 @@ function createScoreElement(name, value, elementToPlace) {
     // debugger
     const element = document.createElement("p")
     const textNode = document.createTextNode(name + ": " + value)
+    
     element.setAttribute("id", name.split(" ").join("-") + "-frame")
     element.appendChild(textNode)
     elementToPlace.appendChild(element)

@@ -8,12 +8,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
+        <link rel="stylesheet" href="loader.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./assets/logoFTSVGv2.svg" type="image/x-icon">
     <title>flashType</title>
 </head>
 
 <body data-status="start" data-theme="light" data-isendless="false">
     <!-- <div id="line250"></div> -->
+    <div id="welcomeScreen">
+        <img src="./assets/logoFTSVGv2.svg" alt="flashType logo">
+        <p>Choose a game mode</p>
+        <div id="choice">
+            <button id="offline">Offline</button>
+            <button id="online">Online</button>
+        </div>
+    </div>
     <div class="timer">
         <span class="timerIcon icons"></span>
         <p id="timerDisplay"><span id="timeElapsed">0s</span>
@@ -51,15 +61,25 @@
             </select>
         </div>
 
+        <div class="options" id="changeMode">
+            <span class="onlineIcon icons"></span>
+            <span class="offlineIcon icons"></span>
+        </div>
+
         <div class="options" id="sync">
             <button id="syncDbBtn">
-            <span class="syncDb"></span>
+                <span class="syncDb"></span>
             </button>
         </div>
     </div>
 
     <div id="game">
         <div id="primary" data-order="first" class="words">
+            <div class="loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
         </div>
         <div id="secondary" data-order="second" class="words">
         </div>
@@ -99,9 +119,12 @@
                 <img src="./assets/discord-mark-black.svg" alt="Discord Mark logo" class="light-mode-logo iconsFooter">
                 <img src="./assets/discord-mark-blue.svg" alt="Discord Mark logo" class="dark-mode-logo iconsFooter">
             </a></div>
+            <div id="privacyPolicy">
+                <a href="/legal/index.html">Privacy Policy</a>
+            </div>
     </footer>
 
-    <script src="index.js"></script>
+    <script type="module" src="index.js"></script>
 </body>
 
 </html>

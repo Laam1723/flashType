@@ -1,3 +1,5 @@
+import { redirect } from "./lib/redirect.js"
+
 const primary = document.getElementById("primary")
 const secondary = document.getElementById("secondary")
 const body = document.body
@@ -23,11 +25,23 @@ let words = localStorage.getItem("words")
 let list
 let listInv
 let errorMode = true
-let maxTime = 15
+let maxTime = localStorage.getItem("maxTime")
 let time = 0
 let intervalID
 let infinit = false
 let firstLetter = true
+
+if (maxTime === null) {
+    maxTime = 15
+    localStorage.setItem("maxTime", maxTime)
+}
+else {
+    JSON.parse(maxTime)
+}
+
+if (maxTime === "0") {
+    infinit = true
+}
 
 updateDisplayedTime()
 
@@ -59,6 +73,70 @@ const syncDbBtn = document.getElementById("syncDbBtn")
 //stats
 let stats = localStorage.getItem("stats")
 let saveStats = localStorage.getItem("saveStats")
+
+//theme system
+let themeSelected = localStorage.getItem("theme")
+if (themeSelected === null) {
+    themeSelected = "light"
+    localStorage.setItem("theme", themeSelected)
+}
+body.setAttribute("theme", themeSelected)
+
+//multiplayer
+let online = localStorage.getItem("online")
+let showedWLCSreen = localStorage.getItem("welcomeScreen")
+let token = sessionStorage.getItem("token")
+const changeMode = document.getElementById("changeMode")
+if (online === null) {
+    online = false
+    showedWLCSreen = null
+}
+else {
+    online = JSON.parse(online)
+}
+
+console.log(token === null && online === true, online);
+
+checkToken()
+const welcomeScreen = document.getElementById("welcomeScreen")
+
+
+if (showedWLCSreen === null) {
+    welcomeScreen.style.display = "flex"
+}
+
+const offlineBtn = document.getElementById("offline")
+const onlineBtn = document.getElementById("online")
+
+offlineBtn.addEventListener("click", () => {
+    online = false
+    welcomeScreen.style.display = "none"
+    localStorage.setItem("welcomeScreen", false)
+    localStorage.setItem("online", false)
+})
+
+onlineBtn.addEventListener("click", () => {
+
+    online = true
+    welcomeScreen.style.display = "none"
+    localStorage.setItem("welcomeScreen", false)
+    localStorage.setItem("online", true)
+    redirect("./mp")
+})
+
+function checkToken() {
+    if (token === null && online === true) {
+        redirect("./mp")
+    }
+}
+
+
+if (online === true) {
+    changeMode.classList.add("online")
+}
+else {
+    changeMode.classList.add("offline")
+}
 
 //other
 let gameEnded = false
@@ -96,18 +174,24 @@ langSelect.value = lang
 
 
 
-if (words == undefined) {
-
-}
-else {
+if ((words === undefined) === false) {
+    console.log("oui");
     words = JSON.parse(words)
+}
+
+function removeLoaders(){
+    const loarders = document.querySelectorAll(".loader")
+    for (let i = 0; i < loarders.length; i++) {
+        loarders[i].remove()
+    }
+        
 }
 
 async function getData(onlyWords) {
     const response = await fetch("./data.json") // data.json is exactly the same data as my hangman
     words = await response.json()
-    //console.log(words);
     localStorage.setItem("words", JSON.stringify(words))
+
     if (onlyWords === true) {
         return
     }
@@ -121,7 +205,9 @@ async function getData(onlyWords) {
         "./assets/infinity.svg",
         "./assets/language.svg",
         "./assets/sync.svg",
-        "./assets/stats-icon.svg"
+        "./assets/stats-icon.svg",
+        "./assets/online.svg",
+        "./assets/offline.svg"
 
     ]
 
@@ -133,12 +219,15 @@ async function getData(onlyWords) {
         ".infinityIcon",
         ".languageIcon",
         ".syncDb",
-        ".stats-icon"
+        ".stats-icon",
+        ".onlineIcon",
+        ".offlineIcon"
 
     ]
 
     for (let i = 0; i < elements.length; i++) {
         const fetchedSVG = await fetch(SVGs[i])
+
         const responseSVG = await fetchedSVG.text()
         const selectedElement = document.querySelectorAll(elements[i])
 
@@ -183,6 +272,7 @@ async function getData(onlyWords) {
         element.innerHTML = responseMoon
     }
 
+    removeLoaders()
 
     init()
 }
@@ -210,6 +300,8 @@ function init() {
     const caret = document.createElement("span")
     caret.setAttribute("id", "caret")
     primary.children[0].appendChild(caret)
+    console.log(primary.children[0]);
+    
     localStorage.setItem("currentWord", JSON.stringify(currentWord))
     localStorage.setItem("nextWord", JSON.stringify(nextWord))
     list = primary.children
@@ -246,6 +338,7 @@ function keyPressed(event) {
         errors++
         errorsInWord++
         wordFailedBool = true
+        console.log(event.code)
         nextLetter()
     }
 }
@@ -320,7 +413,7 @@ function restartGame() {
     caretPos = 0
     firstLetter = true
     score = 0
-    coins = localStorage.getItem("coins")
+    // coins = localStorage.getItem("coins")
     lettersWritten = 0
     errors = 0
     errorsInWord = 0
@@ -475,7 +568,7 @@ function calcStats() {
 
 
 
-    score = Math.round((wpm * maxStreak * sumArray(wordsLengthAvg)) - (errors * wordsFailed * 2))
+    score = Math.round((wpm * (accuracy/10) *sumArray(wordsLengthAvg)) - (errors * 2))
     if (score == Infinity || isNaN(score)) {
         score = 0
     }
@@ -499,7 +592,8 @@ function calcStats() {
     let test = 1
     try {
         if (saveStats === true) {
-            localStorage.setItem("stats", JSON.stringify(stats))
+            console.log(stats)
+            // localStorage.setItem("stats", JSON.stringify(stats))
         }
 
 
@@ -520,7 +614,35 @@ function calcStats() {
     displayStats()
 }
 
+function formatBody(score) {
+    if(sessionStorage.getItem("token") === null){
+        redirect("./mp")
+        return
+    }
+    const body = {
+        "token": sessionStorage.getItem("token"),
+        "stats": score
+    }
+    console.log(body)
+    postJSON(body)
+}
 
+async function postJSON(data) {
+    try {
+        const reponse = await fetch("http://server.enolak.fr:47000/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const resultat = await reponse.json();
+        return resultat
+    } catch (erreur) {
+        console.error(erreur);
+    }
+}
 
 function downloadFile(filename, content) {
     const element = document.createElement("a");
@@ -549,7 +671,12 @@ function updateStat(gameStats) {
             "maxStreak": gameStats[5]
         }
     }
-    stats.push(score)
+    if (online === true) {
+        formatBody(score)
+    }
+    else {
+        stats.push(score)
+    }
 
 }
 
@@ -673,28 +800,33 @@ settings.addEventListener("click", (e) => {
 endless.addEventListener("click", (e) => {
     maxTime = 0
     infinit = true
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
     e.stopPropagation()
 })
 
 t15s.addEventListener("click", () => {
     maxTime = 15
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t30s.addEventListener('click', () => {
     maxTime = 30
 
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t60s.addEventListener('click', () => {
     maxTime = 60
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
 t120s.addEventListener('click', () => {
     maxTime = 120
+    localStorage.setItem("maxTime", maxTime)
     updateDisplayedTime()
 })
 
@@ -738,11 +870,15 @@ theme.addEventListener("click", (e) => {
 
     if (theme == "dark") {
         body.setAttribute("data-theme", "light")
+        localStorage.setItem("theme", "light")
     }
 
     else if (theme == "light") {
         body.setAttribute("data-theme", "dark")
+        localStorage.setItem("theme", "dark")
+
     }
+
 
     e.stopPropagation()
 })
@@ -767,12 +903,33 @@ syncDbBtn.addEventListener("click", (e) => {
 })
 
 
+changeMode.addEventListener("click", (e) => {
+    if (Array.from(e.currentTarget.classList).includes("online")) {
+        online = false
+        e.currentTarget.classList.add("offline")
+        e.currentTarget.classList.remove("online")
+        localStorage.setItem("online", false)
+    }
+    else if (Array.from(e.currentTarget.classList).includes("offline")) {
+        online = true
+        e.currentTarget.classList.add("online")
+        e.currentTarget.classList.remove("offline")
+        localStorage.setItem("online", true)
+        checkToken()
+    }
+    e.stopPropagation()
+})
+
+
+
+
+
 let UA = navigator.userAgent
-const UAP = document.getElementById("UA")
 UA = UA.split(" ")
 
-for (element of UA) {
+for (let element of UA) {
     if (element.startsWith("Mobile")) {
         alert("Warning phones aren't compatible please use a computer instead.")
     }
 }
+

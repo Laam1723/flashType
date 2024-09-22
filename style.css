@@ -3,6 +3,7 @@
     --blue: #5865F2;
     --selected: #5865F2;
     --error: #ed4247;
+    --sucess: #57F287;
     --shadow: rgba(0, 0, 0, .5);
 
     /* colors to light theme */
@@ -94,7 +95,7 @@ div[data-order=first] {
 }
 
 body[data-animation=true] div[data-order=first] {
-    animation: toFirst 0.4s ease 0s 1 normal none;
+    animation: toFirst 0.4s ease 0s 1 normal backwards;
 }
 
 div[data-order=second] {
@@ -126,6 +127,7 @@ body[data-theme=dark] div[data-order=second] {
     }
 
     100% {
+        width: max-content;
         height: 80px;
     }
 }
@@ -429,7 +431,7 @@ body[data-theme=dark] #settings {
 }
 
 #settings[data-firstAnimation=false] {
-    animation: deploySettings 1s ease 0s 1 normal none;
+    animation: deploySettings 1s ease 0s 1 normal forwards;
 }
 
 @keyframes deploySettings {
@@ -461,6 +463,13 @@ body[data-theme=dark] #settings {
 
     60% {
         padding-top: 10px;
+        padding-bottom: 10px;
+        width: var(--width-when-deployed);
+        height: var(--height-when-deployed);
+    }
+    100%{
+        padding-top: 10px;
+        width: var(--width-when-deployed);
         padding-bottom: 10px;
         height: var(--height-when-deployed);
     }
@@ -528,6 +537,7 @@ body[data-theme=dark] #settings {
     border: 0px;
     min-height: 44px;
     position: relative;
+    cursor: pointer;
 }
 
 body[data-theme=dark] .options span svg{
@@ -707,7 +717,7 @@ body[data-theme=dark] #settings>.timer>input::placeholder {
 }
 
 #settings[data-firstAnimation=false]>.settingsIcon {
-    animation: deploySettingsIcon 1s ease 0s 1 normal none;
+    animation: deploySettingsIcon 1s ease 0s 1 normal forwards;
 }
 
 @keyframes deploySettingsIcon {
@@ -733,7 +743,7 @@ body[data-theme=dark] #settings>.timer>input::placeholder {
     }
 
     40% {
-        display: unset;
+        display: none;
         position: relative;
         top: -50px;
     }
@@ -876,6 +886,11 @@ footer {
     width: 100vw;
     display: flex;
     gap: 5px;
+    align-items: end;
+}
+
+footer > #privacyPolicy{
+    margin: 0px 0px 10px 0px;
 }
 
 .iconsFooter {
@@ -898,3 +913,60 @@ body[data-theme=dark] .dark-mode-logo {
 body[data-theme=light] .dark-mode-logo {
     display: none;
 }
+
+#welcomeScreen{
+    position: fixed;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+#welcomeScreen > img{
+    width: 25vw;
+    height: 25vh;
+    position: absolute;
+    top: 0px;
+}
+
+#choice{
+    position: absolute;
+    bottom: 70px;
+    display: flex;
+    gap: 20px;
+}
+
+#welcomeScreen button{
+    width: 160px;
+    height: 80px;
+    border-radius: 100px;
+    bottom: 10px;
+    border: 0px;
+    font-family: inherit;
+    font-size: xx-large;
+    cursor: pointer;
+    background-color: var(--light1);
+}
+
+#welcomeScreen > p {
+    font-size: xx-large;
+}
+
+.online .offlineIcon{
+    display: none;
+}
+
+.offline .onlineIcon{
+    display: none;
+}
+/* 
+#accept{
+    background-color: var(--blue);
+    color: #fff;
+} */
+

@@ -1,0 +1,110 @@
+.account{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 400px;
+    background-color: var(--light1);
+    border-radius: 20px;
+    gap: 40px;
+}
+
+.input{
+    height: 20px;
+    width: 250px;
+    border-radius: 20px;
+    border: 0px;
+    padding: 10px;
+    position: relative;
+    top: 10px;
+}
+
+#loginPage .input {
+    top: -30px;
+}
+
+
+.title{
+    position: absolute;
+    top: 10px;
+    margin-bottom: 0px;
+}
+
+.submitBtn{
+    border: 0px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 10px;
+    background-color: var(--blue);
+    color: #fff;
+    height: 40px;
+    width: 100px;
+}
+
+.messages{
+    border-radius: 20px;
+    color: #fff;
+}
+
+.messages{
+    background-color: var(--error);
+    position: relative;
+    top: 30px;
+}
+
+
+.messages > *{
+    margin: 20px;
+}
+
+.shake{
+    animation: shake .15s linear 0s 3 normal none;
+}
+
+
+.collapsed{
+    width: 170px;
+    height: 65px;
+    padding: 0px;
+    gap: 0px;
+    border-radius: 100px;
+    position: absolute;
+    bottom: 0px;
+    z-index: 10;
+    right: 0px;
+    transform: translateX(200px) translateY(80px);
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.collapsed > *:not(h1){
+    display: none;
+}
+
+.collapsed > h1{
+    margin: 0px;
+    padding: 0px;
+    font-size: 32px;
+    top: unset ;
+}
+
+#container{
+    position: absolute;
+}
+
+@keyframes shake {
+    0%{
+        transform: translate(3px,0px);
+    }
+
+    50%{
+        transform: translate(-3px,0px);
+    }
+
+    100%{
+        transform: translate(0px,0px);
+    }
+    
+}
