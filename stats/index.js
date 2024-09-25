@@ -39,7 +39,7 @@ function createBody() {
 
 async function postJSON(donnees) {
     try {
-        const reponse = await fetch("http://server.enolak.fr:47000/stats", {
+        const reponse = await fetch("http://server.flashtype.fr:47000/stats", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
