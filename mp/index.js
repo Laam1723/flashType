@@ -1,4 +1,10 @@
+import * as lib from "../lib/loader.js"
 let mode
+let theme = localStorage.getItem("theme")
+if(theme === "dark"){
+    document.body.classList.add("dark")
+}
+
 async function postJSON(donnees) {
     try {
         const reponse = await fetch("https://server.flashtype.fr:47000/" + mode, {
@@ -8,7 +14,7 @@ async function postJSON(donnees) {
             },
             body: JSON.stringify(donnees),
             "Access-Control-Allow-Origin": "*",
-            
+
         });
 
         const resultat = await reponse.json();
@@ -21,7 +27,7 @@ async function postJSON(donnees) {
 
 async function submit(data) {
 
-    
+
     const donnees = {
         "username": data[0],
         "password": data[1]
@@ -50,16 +56,16 @@ async function submit(data) {
     else if (serverResponse.exist === "password") {
         issue("Invalid password", login)
     }
-    else if(serverResponse.exist === false && mode === "login"){
+    else if (serverResponse.exist === false && mode === "login") {
         issue("This account doesn't exist", login)
     }
 }
 
 
 
-function redirect(){
+function redirect() {
     const mainPage = document.createElement("a")
-    mainPage.setAttribute("href","/")
+    mainPage.setAttribute("href", "/")
     mainPage.style.display = "none"
     document.body.appendChild(mainPage)
     mainPage.click()
@@ -69,7 +75,8 @@ const submitButton = document.querySelectorAll(".submitBtn")
 for (let i = 0; i < submitButton.length; i++) {
 
     submitButton[i].addEventListener("click", (e) => {
-        console.log(e.currentTarget.parentElement)
+        e.currentTarget.innerHTML = ""
+        e.currentTarget.append(lib.createLoader("var(--blue)"))
         getData(e.currentTarget.parentElement)
     })
 }
@@ -79,16 +86,16 @@ function getData(element) {
     const username = element.querySelector(".username")
     const password = element.querySelector(".password")
     const checkbox = element.querySelector("#checkbox")
-    
-    if(element.id === "signupPage"){
-        if(checkbox.checked === false)
+
+    if (element.id === "signupPage") {
+        if (checkbox.checked === false)
             issue("You need to accept the policy", element.querySelector(".messages"))
     }
     if (username.value === "" || password.value === "") {
         issue("Please fill all fields", element.querySelector(".messages"))
         console.error("Empty field")
     }
-    
+
     else {
         console.log(element.id)
         mode = element.id.split("P")[0]

@@ -422,7 +422,6 @@ body[data-theme=dark] #timerDisplay {
     gap: 10px;
     padding: 10px;
     overflow: hidden;
-    outline: 1px solid var(--light3);
 
 }
 
