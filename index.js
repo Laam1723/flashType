@@ -80,6 +80,9 @@ if (themeSelected === null) {
     themeSelected = "light"
     localStorage.setItem("theme", themeSelected)
 }
+else if(themeSelected === "dark"){
+    body.setAttribute("data-theme","dark")
+}
 body.setAttribute("theme", themeSelected)
 
 //multiplayer
@@ -207,7 +210,8 @@ async function getData(onlyWords) {
         "./assets/sync.svg",
         "./assets/stats-icon.svg",
         "./assets/online.svg",
-        "./assets/offline.svg"
+        "./assets/offline.svg",
+        "./assets/account.svg"
 
     ]
 
@@ -221,7 +225,8 @@ async function getData(onlyWords) {
         ".syncDb",
         ".stats-icon",
         ".onlineIcon",
-        ".offlineIcon"
+        ".offlineIcon",
+        ".loginIcon"
 
     ]
 
@@ -271,7 +276,6 @@ async function getData(onlyWords) {
         const element = moonIcons[i]
         element.innerHTML = responseMoon
     }
-
     removeLoaders()
 
     init()
