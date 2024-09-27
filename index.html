@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
-        <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="loader.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="./assets/logoFTSVGv2.svg" type="image/x-icon">
     <title>flashType</title>
@@ -68,8 +68,13 @@
 
         <div class="options" id="sync">
             <button id="syncDbBtn">
-                <span class="syncDb"></span>
+                <span class="syncDb icons"></span>
             </button>
+        </div>
+        <div class="options" id="connect">
+            <a id="connectBtn" href="./mp">
+                <span class="connectIcon icons"></span>
+            </a>
         </div>
     </div>
 
@@ -119,9 +124,9 @@
                 <img src="./assets/discord-mark-black.svg" alt="Discord Mark logo" class="light-mode-logo iconsFooter">
                 <img src="./assets/discord-mark-blue.svg" alt="Discord Mark logo" class="dark-mode-logo iconsFooter">
             </a></div>
-            <div id="privacyPolicy">
-                <a href="/legal/index.html">Privacy Policy</a>
-            </div>
+        <div id="privacyPolicy">
+            <a href="/legal/index.html">Privacy Policy</a>
+        </div>
     </footer>
 
     <script type="module" src="index.js" crossorigin="*"></script>
