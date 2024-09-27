@@ -629,12 +629,14 @@ function formatBody(score) {
 
 async function postJSON(data) {
     try {
-        const reponse = await fetch("http://server.enolak.fr:47000/save", {
+        const reponse = await fetch("https://server.flashtype.fr:47000/save", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            "Access-Control-Allow-Origin": "*",
+
         });
 
         const resultat = await reponse.json();
