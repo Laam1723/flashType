@@ -1,8 +1,10 @@
 .dot {
-    width: 30px;
-    height: 30px;
+    min-width: 20px;
+    width: 100%;
+    aspect-ratio: 1/1;
     background-color: #fff;
-    border-radius: 100%;
+    border-radius: 1000px;
+    display: flex;
 
 }
 
@@ -11,14 +13,19 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    height: 100%;
+    aspect-ratio: 1/1;
+    min-width: 50%;
 }
 
-.loader > .dot:nth-child(1) {
+.loader>.dot:nth-child(1) {
     animation: loading 1s linear 0s infinite normal none;
 }
+
 .dot:nth-child(2) {
     animation: loading 1s linear .25s infinite normal none;
 }
+
 .dot:nth-child(3) {
 
     animation: loading 1s linear .5s infinite normal none;
@@ -27,7 +34,7 @@
 
 
 @keyframes loading {
-   
+
 
     50% {
         opacity: 0%;

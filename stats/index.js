@@ -1,8 +1,12 @@
-import {redirect} from "../lib/redirect.js"
+import { redirect } from "../lib/redirect.js"
 
 const tabs = document.querySelectorAll(".tabs")
 let online = JSON.parse(localStorage.getItem("online"))
+const theme = localStorage.getItem("theme")
 
+if(theme === "dark"){
+    document.body.classList.add("dark")
+}
 
 
 
@@ -24,7 +28,7 @@ for (let i = 0; i < tabs.length; i++) {
         const frame = document.getElementById(e.target.id + "-frame")
         e.target.classList.add("selected")
         console.log(frame);
-        
+
         frame.classList.add("frame-select")
     })
 }
@@ -59,6 +63,30 @@ async function postJSON(donnees) {
 }
 
 async function getStats() {
+
+    //get SVGs
+    const SVGs = [
+        "../assets/back-arrow.svg"
+    ]
+
+    const elements = [
+        ".return"
+    ]
+
+    for (let i = 0; i < elements.length; i++) {
+        const fetchedSVG = await fetch(SVGs[i])
+
+        const responseSVG = await fetchedSVG.text()
+        const selectedElement = document.querySelectorAll(elements[i])
+
+        for (let j = 0; j < selectedElement.length; j++) {
+            selectedElement[j].innerHTML = responseSVG
+
+        }
+    }
+
+
+
     let stats
     if (online === true) {
         stats = await createBody()
@@ -194,7 +222,7 @@ function displayScores() {
 
     const frames = document.querySelectorAll(".frames")
     createScoreElement("Games played", newStats.games, frames[3])
-    
+
 
     for (let i = 0; i < frames.length; i++) {
         createScoreElement("Score", newStats[frames[i].id.split("-")[0]].score, frames[i])
@@ -222,7 +250,7 @@ function createScoreElement(name, value, elementToPlace) {
     // debugger
     const element = document.createElement("p")
     const textNode = document.createTextNode(name + ": " + value)
-    
+
     element.setAttribute("id", name.split(" ").join("-") + "-frame")
     element.appendChild(textNode)
     elementToPlace.appendChild(element)

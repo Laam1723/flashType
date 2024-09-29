@@ -77,10 +77,13 @@ let saveStats = localStorage.getItem("saveStats")
 //theme system
 let themeSelected = localStorage.getItem("theme")
 if (themeSelected === null) {
-    themeSelected = "light"
+    themeSelected = "dark"
     localStorage.setItem("theme", themeSelected)
 }
-body.setAttribute("theme", themeSelected)
+else if (themeSelected === "dark") {
+    body.setAttribute("data-theme", "dark")
+}
+body.setAttribute("data-theme", themeSelected)
 
 //multiplayer
 let online = localStorage.getItem("online")
@@ -179,12 +182,12 @@ if ((words === undefined) === false) {
     words = JSON.parse(words)
 }
 
-function removeLoaders(){
+function removeLoaders() {
     const loarders = document.querySelectorAll(".loader")
     for (let i = 0; i < loarders.length; i++) {
         loarders[i].remove()
     }
-        
+
 }
 
 async function getData(onlyWords) {
@@ -207,7 +210,8 @@ async function getData(onlyWords) {
         "./assets/sync.svg",
         "./assets/stats-icon.svg",
         "./assets/online.svg",
-        "./assets/offline.svg"
+        "./assets/offline.svg",
+        "./assets/account.svg"
 
     ]
 
@@ -221,7 +225,8 @@ async function getData(onlyWords) {
         ".syncDb",
         ".stats-icon",
         ".onlineIcon",
-        ".offlineIcon"
+        ".offlineIcon",
+        ".connectIcon"
 
     ]
 
@@ -235,41 +240,6 @@ async function getData(onlyWords) {
             selectedElement[j].innerHTML = responseSVG
 
         }
-    }
-
-    const timerSVG = await fetch("./assets/timer.svg")
-    const settingsSVG = await fetch("./assets/settings.svg")
-    const sunSVG = await fetch("./assets/sun.svg")
-    const moonSVG = await fetch("./assets/moon.svg")
-
-    const responseTimer = await timerSVG.text()
-    const responseSettings = await settingsSVG.text()
-    const responseSun = await sunSVG.text()
-    const responseMoon = await moonSVG.text()
-
-    const timersIcons = document.querySelectorAll(".timerIcon")
-    const settingsIcons = document.querySelectorAll(".settingsIcon")
-    const sunIcons = document.querySelectorAll(".sunIcon")
-    const moonIcons = document.querySelectorAll(".moonIcon")
-
-    for (let i = 0; i < timersIcons.length; i++) {
-        const element = timersIcons[i]
-        element.innerHTML = responseTimer
-    }
-
-    for (let i = 0; i < settingsIcons.length; i++) {
-        const element = settingsIcons[i]
-        element.innerHTML = responseSettings
-    }
-
-    for (let i = 0; i < sunIcons.length; i++) {
-        const element = sunIcons[i]
-        element.innerHTML = responseSun
-    }
-
-    for (let i = 0; i < moonIcons.length; i++) {
-        const element = moonIcons[i]
-        element.innerHTML = responseMoon
     }
 
     removeLoaders()
@@ -301,7 +271,7 @@ function init() {
     caret.setAttribute("id", "caret")
     primary.children[0].appendChild(caret)
     console.log(primary.children[0]);
-    
+
     localStorage.setItem("currentWord", JSON.stringify(currentWord))
     localStorage.setItem("nextWord", JSON.stringify(nextWord))
     list = primary.children
@@ -568,7 +538,7 @@ function calcStats() {
 
 
 
-    score = Math.round((wpm * (accuracy/10) *sumArray(wordsLengthAvg)) - (errors * 2))
+    score = Math.round((wpm * (accuracy / 10) * sumArray(wordsLengthAvg)) - (errors * 2))
     if (score == Infinity || isNaN(score)) {
         score = 0
     }
@@ -615,7 +585,7 @@ function calcStats() {
 }
 
 function formatBody(score) {
-    if(sessionStorage.getItem("token") === null){
+    if (sessionStorage.getItem("token") === null) {
         redirect("./mp")
         return
     }
@@ -760,6 +730,8 @@ restart.addEventListener("click", () => {
     restartGame()
 })
 addEventListener('keydown', (e) => {
+    console.log(e.code)
+    const ignoredKeys = ["AltLeft", "ControlLeft", "ControlRight", "Tab", "ShiftLeft", "CapsLock"," MetaLeft","MetaRight"]
     if (tCustomFocused == true) {
         return
     }
@@ -768,6 +740,9 @@ addEventListener('keydown', (e) => {
         if (playing === false) {
             restartGame()
         }
+    }
+    else if (ignoredKeys.includes(e.code)) {
+        return
     }
     else if (gameEnded === false) {
         if (e.code == "Backspace") {
