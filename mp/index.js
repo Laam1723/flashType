@@ -14,7 +14,6 @@ async function postJSON(donnees) {
             },
             body: JSON.stringify(donnees),
             "Access-Control-Allow-Origin": "*",
-
         });
 
         const resultat = await reponse.json();
