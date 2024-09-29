@@ -1,4 +1,8 @@
 const tabs = document.querySelectorAll(".tabs")
+const theme = localStorage.getItem("theme")
+if(theme === "dark"){
+    document.body.classList.add("dark")
+}
 
 for (let i = 0; i < tabs.length; i++) {
     tabs[i].addEventListener('click', (e) => {
